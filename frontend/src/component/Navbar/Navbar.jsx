@@ -1,25 +1,24 @@
-import React from 'react'
-import { Link } from 'react-router'
+import { Link } from "react-router";
 
 function Navbar() {
   return (
-    <div className='w-[90%] border-2 flex justify-between p-3 mt-3'> 
-      <div className="logo">
-        <h1 className='logo_content text-white font-bold text-3xl '>Kinetic</h1>
+    <div className="flex w-full max-w-6xl items-center justify-between rounded-full border border-white/10 bg-white/5 px-5 py-4 backdrop-blur">
+      <div>
+        <Link to="/" className="text-2xl font-black uppercase tracking-[0.25em] text-white">
+          Kinetic
+        </Link>
       </div>
 
-      <div className="nav-button">
-       
-       
-      <Link to="/workspace">
-  <button className="text-2xl border-2 p-2 rounded-3xl bg-yellow-300 border-black font-semibold hover:bg-yellow-400 transition-colors">
-    Get Started
-  </button>
-</Link> 
-        
+      <div className="flex items-center gap-3">
+        <Link
+          to="/workspace"
+          className="rounded-full bg-yellow-300 px-5 py-2 text-sm font-bold uppercase tracking-[0.2em] text-black transition hover:bg-yellow-200"
+        >
+          Open Workspace
+        </Link>
       </div>
     </div>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;

@@ -1,11 +1,12 @@
-import React from 'react'
-
 function Footer() {
   return (
-    <div className='w-screen bg-zinc-900 mt-9 text-xl text-white flex items-center justify-center'>
-      saurabh5532u@gmail.com Github: saurabh24thakur
-    </div>
-  )
+    <footer className="w-full border-t border-white/10 px-6 py-5 text-sm text-white/60">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <p>Built for turning rough product ideas into working prototypes.</p>
+        <p>Contact: saurabh5532u@gmail.com | GitHub: saurabh24thakur</p>
+      </div>
+    </footer>
+  );
 }
 
-export default Footer
+export default Footer;
