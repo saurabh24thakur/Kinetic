@@ -41,6 +41,14 @@ const productSignals = [
   "Ready for auth, prompt workflows, and future generation routes",
 ];
 
+const motionSignals = [
+  "Auth-first flow",
+  "Backend-aware entry",
+  "Prompt workspace",
+  "Live route structure",
+  "Product motion system",
+];
+
 const faqs = [
   {
     question: "What works right now?",
@@ -50,61 +58,93 @@ const faqs = [
 
 const LandingPage = () => {
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,#243042_0%,#090909_44%,#000000_100%)] text-white">
+    <div className="kinetic-page min-h-screen bg-[radial-gradient(circle_at_top,#243042_0%,#090909_44%,#000000_100%)] text-white">
+      <div className="kinetic-ambient-grid" />
+      <div className="kinetic-ambient-scan" />
+      <div className="kinetic-ambient-beam" />
+      <div className="pointer-events-none absolute left-[10%] top-[16%] h-40 w-40 rounded-full bg-yellow-300/8 blur-3xl kinetic-float-soft" />
+      <div className="pointer-events-none absolute right-[8%] top-[10%] h-56 w-56 rounded-full bg-sky-400/8 blur-3xl kinetic-float-soft" />
+
       <div className="px-5 pb-12 pt-4 sm:px-8 sm:pb-16 xl:px-12">
-        <div className="mx-auto flex w-full max-w-[92rem] flex-col gap-14">
+        <div className="kinetic-page-shell mx-auto flex w-full max-w-[92rem] flex-col gap-14">
           <Navbar />
 
           <main className="grid gap-10 lg:grid-cols-[1.35fr_0.65fr] lg:items-end xl:gap-16">
             <section className="space-y-6 pt-2 sm:pt-4">
-              <p className="inline-flex rounded-full border border-yellow-300/30 bg-yellow-300/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.3em] text-yellow-200">
+              <p
+                className="kinetic-reveal inline-flex rounded-full border border-yellow-300/30 bg-yellow-300/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.3em] text-yellow-200"
+                style={{ "--delay": "140ms" }}
+              >
                 Prototype Engine
               </p>
 
               <div className="space-y-2">
-                <h1 className="text-5xl font-black uppercase leading-none tracking-[-0.06em] sm:text-7xl lg:text-[7.5rem] xl:text-[8rem]">
+                <h1
+                  className="kinetic-title-line text-5xl font-black uppercase leading-none tracking-[-0.06em] sm:text-7xl lg:text-[7.5rem] xl:text-[8rem]"
+                  style={{ "--delay": "190ms" }}
+                >
                   Start
                 </h1>
-                <h1 className="text-5xl font-black uppercase leading-none tracking-[-0.06em] text-white/20 line-through sm:text-7xl lg:text-[7.5rem] xl:text-[8rem]">
+                <h1
+                  className="kinetic-title-line text-5xl font-black uppercase leading-none tracking-[-0.06em] text-white/20 line-through sm:text-7xl lg:text-[7.5rem] xl:text-[8rem]"
+                  style={{ "--delay": "260ms" }}
+                >
                   with auth
                 </h1>
-                <h1 className="text-5xl font-black uppercase leading-none tracking-[-0.06em] sm:text-7xl lg:text-[7.5rem] xl:text-[8rem]">
+                <h1
+                  className="kinetic-title-line text-5xl font-black uppercase leading-none tracking-[-0.06em] sm:text-7xl lg:text-[7.5rem] xl:text-[8rem]"
+                  style={{ "--delay": "330ms" }}
+                >
                   shape product flow
                 </h1>
               </div>
 
-              <div className="max-w-3xl space-y-4 text-base text-white/75 sm:text-lg">
+              <div className="kinetic-reveal max-w-3xl space-y-4 text-base text-white/75 sm:text-lg" style={{ "--delay": "390ms" }}>
                 <p>
                   Kinetic is an AI-assisted full stack prototype builder for turning rough ideas into usable product flows.
                 </p>
               </div>
 
-              <div className="flex flex-col gap-3 sm:flex-row">
+              <div className="kinetic-reveal flex flex-col gap-3 sm:flex-row" style={{ "--delay": "450ms" }}>
                 <Link
-                  to="/workspace"
-                  className="inline-flex items-center justify-center rounded-full bg-yellow-300 px-6 py-3.5 text-sm font-black uppercase tracking-[0.24em] text-black transition hover:bg-yellow-200"
+                  to="/login"
+                  className="kinetic-button inline-flex items-center justify-center rounded-full bg-yellow-300 px-6 py-3.5 text-sm font-black uppercase tracking-[0.24em] text-black transition hover:bg-yellow-200"
                 >
-                  Start In Workspace
+                  Open Login
                 </Link>
                 <a
                   href="#features"
-                  className="inline-flex items-center justify-center rounded-full border border-white/20 px-6 py-3.5 text-sm font-bold uppercase tracking-[0.2em] text-white/80 transition hover:border-white/40 hover:text-white"
+                  className="kinetic-button inline-flex items-center justify-center rounded-full border border-white/20 px-6 py-3.5 text-sm font-bold uppercase tracking-[0.2em] text-white/80 transition hover:border-white/40 hover:text-white"
                 >
                   See Frontend Scope
                 </a>
               </div>
+
+              <div className="kinetic-reveal kinetic-marquee" style={{ "--delay": "520ms" }}>
+                <div className="kinetic-marquee-track">
+                  {[...motionSignals, ...motionSignals].map((signal, index) => (
+                    <span key={`${signal}-${index}`} className="kinetic-marquee-item">
+                      <span className="kinetic-live-dot" />
+                      {signal}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </section>
 
-            <section className="border-l border-white/10 pl-6 lg:pl-10">
-              <p className="text-xs font-bold uppercase tracking-[0.28em] text-yellow-200/80">Current backend contract</p>
+            <section className="kinetic-reveal kinetic-panel border-l border-white/10 pl-6 lg:pl-10" style={{ "--delay": "240ms" }}>
+              <p className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.28em] text-yellow-200/80">
+                <span className="kinetic-live-dot" />
+                Current backend contract
+              </p>
               <div className="mt-5 space-y-6 font-mono text-sm text-white/80">
-                <div className="border-b border-white/10 pb-5">
+                <div className="kinetic-route-line border-b border-white/10 pb-5">
                   <p className="text-yellow-200">POST /api/v1/register</p>
                   <p className="mt-3 max-w-md text-base font-sans leading-7 text-white/65">
                     Creates a user with username, email, and password.
                   </p>
                 </div>
-                <div className="border-b border-white/10 pb-5">
+                <div className="kinetic-route-line border-b border-white/10 pb-5">
                   <p className="text-yellow-200">POST /api/v1/login</p>
                   <p className="mt-3 max-w-md text-base font-sans leading-7 text-white/65">
                     Logs in with the same exact three fields returned by the backend.
@@ -119,7 +159,8 @@ const LandingPage = () => {
 
           <section
             id="about"
-            className="grid gap-10 border-t border-white/10 pt-12 lg:grid-cols-[1fr_1.1fr] lg:pt-16 xl:gap-14"
+            className="kinetic-reveal kinetic-divider grid gap-10 border-t border-white/10 pt-12 lg:grid-cols-[1fr_1.1fr] lg:pt-16 xl:gap-14"
+            style={{ "--delay": "520ms" }}
           >
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.28em] text-yellow-200/80">How Kinetic Works</p>
@@ -137,7 +178,7 @@ const LandingPage = () => {
             </div>
           </section>
 
-          <section id="features" className="border-t border-white/10 pt-12 lg:pt-16">
+          <section id="features" className="kinetic-reveal kinetic-divider border-t border-white/10 pt-12 lg:pt-16" style={{ "--delay": "620ms" }}>
             <div className="grid gap-8 lg:grid-cols-[0.55fr_1.45fr] xl:grid-cols-[0.45fr_1.55fr]">
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.28em] text-white/45">Frontend scope</p>
@@ -148,7 +189,7 @@ const LandingPage = () => {
 
               <div className="grid gap-8 border-t border-white/10 pt-6 md:grid-cols-3 md:border-t-0 md:pt-0">
                 {featureCards.map((card) => (
-                  <article key={card.title} className="border-t border-white/10 pt-6 md:border-t-0 md:pt-0">
+                  <article key={card.title} className="kinetic-card border-t border-white/10 pt-6 md:border-t-0 md:pt-0">
                     <h3 className="text-lg font-bold uppercase tracking-[0.18em] text-white">{card.title}</h3>
                     <p className="mt-4 leading-7 text-white/72">{card.description}</p>
                   </article>
@@ -159,16 +200,19 @@ const LandingPage = () => {
 
           <section
             id="flow"
-            className="grid gap-10 border-t border-white/10 pt-12 lg:grid-cols-[1.05fr_0.95fr] lg:pt-16 xl:grid-cols-[1.15fr_0.85fr]"
+            className="kinetic-reveal kinetic-divider grid gap-10 border-t border-white/10 pt-12 lg:grid-cols-[1.05fr_0.95fr] lg:pt-16 xl:grid-cols-[1.15fr_0.85fr]"
+            style={{ "--delay": "720ms" }}
           >
-            <article>
+            <article className="kinetic-panel">
               <p className="text-xs font-bold uppercase tracking-[0.28em] text-yellow-200/80">How it flows</p>
               <div className="mt-6 space-y-6 border-l border-white/10 pl-6 sm:pl-8">
                 {workflowSteps.map((step) => (
-                  <div key={step.id} className="relative">
-                    <span className="absolute -left-[2.55rem] top-1 h-4 w-4 rounded-full border border-yellow-300 bg-black sm:-left-[3.05rem]" />
+                  <div key={step.id} className="kinetic-card relative">
+                    <span className="absolute -left-[2.55rem] top-1 sm:-left-[3.05rem]">
+                      <span className="kinetic-live-dot" />
+                    </span>
                     <div className="flex items-start gap-4">
-                      <span className="rounded-full bg-yellow-300 px-3 py-1 text-xs font-black tracking-[0.2em] text-black">
+                      <span className="kinetic-float-soft rounded-full bg-yellow-300 px-3 py-1 text-xs font-black tracking-[0.2em] text-black">
                         {step.id}
                       </span>
                       <div>
@@ -181,7 +225,7 @@ const LandingPage = () => {
               </div>
             </article>
 
-            <article className="flex flex-col justify-between gap-10">
+            <article className="kinetic-panel flex flex-col justify-between gap-10">
               <p className="text-xs font-bold uppercase tracking-[0.28em] text-white/45">What The Current Build Supports</p>
               <h2 className="mt-4 max-w-3xl text-3xl font-black uppercase tracking-[-0.04em] text-white sm:text-4xl">
                 The frontend already matches the backend entry flow and leaves clear space for the generation layer.
@@ -201,23 +245,26 @@ const LandingPage = () => {
             </article>
           </section>
 
-          <section className="grid gap-10 border-t border-white/10 pt-12 lg:grid-cols-[1.2fr_0.8fr] lg:pt-16 xl:grid-cols-[1.3fr_0.7fr]">
-            <article>
+          <section
+            className="kinetic-reveal kinetic-divider grid gap-10 border-t border-white/10 pt-12 lg:grid-cols-[1.2fr_0.8fr] lg:pt-16 xl:grid-cols-[1.3fr_0.7fr]"
+            style={{ "--delay": "820ms" }}
+          >
+            <article className="kinetic-panel">
               <p className="text-xs font-bold uppercase tracking-[0.28em] text-yellow-200/80">Built for</p>
               <div className="mt-6 grid gap-x-10 gap-y-6 md:grid-cols-2">
-                <div className="border-t border-white/10 pt-5">
+                <div className="kinetic-card border-t border-white/10 pt-5">
                   <h3 className="text-lg font-bold uppercase tracking-[0.16em] text-white">Founders</h3>
                   <p className="mt-3 leading-7 text-white/70">
                     Turn a rough product idea into a clearer workflow before committing to a larger build cycle.
                   </p>
                 </div>
-                <div className="border-t border-white/10 pt-5">
+                <div className="kinetic-card border-t border-white/10 pt-5">
                   <h3 className="text-lg font-bold uppercase tracking-[0.16em] text-white">Developers</h3>
                   <p className="mt-3 leading-7 text-white/70">
                     Keep the interface connected to actual backend routes instead of designing around placeholders.
                   </p>
                 </div>
-                <div className="border-t border-white/10 pt-5">
+                <div className="kinetic-card border-t border-white/10 pt-5">
                   <h3 className="text-lg font-bold uppercase tracking-[0.16em] text-white">Small teams</h3>
                   <p className="mt-3 leading-7 text-white/70">
                     Share one working surface for login, prompt drafting, and the next implementation steps.
@@ -226,11 +273,11 @@ const LandingPage = () => {
               </div>
             </article>
 
-            <article id="faq">
+            <article id="faq" className="kinetic-panel">
               <p className="text-xs font-bold uppercase tracking-[0.28em] text-white/45">Common questions</p>
               <div className="mt-6 divide-y divide-white/10 border-t border-white/10">
                 {faqs.map((faq) => (
-                  <div key={faq.question} className="py-5">
+                  <div key={faq.question} className="kinetic-card py-5">
                     <h3 className="text-base font-bold uppercase tracking-[0.14em] text-white">{faq.question}</h3>
                     <p className="mt-3 leading-7 text-white/70">{faq.answer}</p>
                   </div>
