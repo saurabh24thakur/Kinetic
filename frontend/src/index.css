@@ -452,6 +452,27 @@ body {
   animation-delay: var(--delay, 0ms);
 }
 
+.hero-text {
+  /* Font Family */
+  font-family: 'Inter', sans-serif;
+  
+  /* Font Weight & Size */
+  font-weight: 500;
+  font-size: 3.5rem; /* Adjust based on your layout */
+  
+  /* Layout & Spacing */
+  text-align: center;
+  line-height: 1.1; /* This creates the "connected" look between lines */
+  letter-spacing: -0.02em; /* Slight tightening for that premium look */
+  
+  /* Color */
+  color: #000000;
+  
+  /* Containment */
+  /* max-width: 400px; */
+  margin: 0 auto;
+}
+
 .kinetic-title-line {
   opacity: 0;
   animation: kinetic-rise 850ms cubic-bezier(0.22, 1, 0.36, 1) both;
