@@ -12,55 +12,66 @@ const Navbar = () => {
   };
 
   return (
-    <div
-      className="kinetic-reveal flex w-full items-center justify-between gap-4 border-b border-white/10 pb-5"
-      style={{ "--delay": "80ms" }}
-    >
-      <Link to="/" className="kinetic-brand">
-        <span className="kinetic-brand-word">
-          <span className="text-xl font-black uppercase tracking-[0.22em] text-white sm:text-2xl sm:tracking-[0.25em]">
+    <nav className="reveal flex w-full h-14 items-center justify-between border-b border-white/5 bg-[#121415] px-8 py-4 backdrop-blur-xl sticky top-0 z-[60]">
+      <div className="flex items-center gap-12">
+        <Link to="/" className="group flex items-center gap-2">
+          <div className="h-4 w-[2px] bg-[#3291ff] shadow-[0_0_12px_#3291ff] transition-all group-hover:h-6" />
+          <span className="text-sm font-black tracking-[0.2em] text-[#E2E2E3] uppercase">
             Kinetic
           </span>
-        </span>
-      </Link>
+        </Link>
+      </div>
 
-      <div className="flex items-center gap-4">
-        <div className="hidden items-center gap-5 text-xs font-bold uppercase tracking-[0.18em] text-white/55 sm:flex sm:text-sm">
-          <a href={location.pathname === "/" ? "#about" : "/#about"} className="transition hover:text-white">
-            About
-          </a>
-          <a href={location.pathname === "/" ? "#flow" : "/#flow"} className="transition hover:text-white">
-            Flow
-          </a>
-          {user && (
-            <Link to="/workspace" className="transition hover:text-white">
+      <div className="hidden absolute left-1/2 -translate-x-1/2 items-center gap-8 lg:flex">
+        <Link to="/" className={`nav-link text-[10px] font-bold uppercase tracking-[0.2em] ${location.pathname === '/' ? 'text-[#3291ff]' : 'text-[#C0C6D5]'}`}>
+          Home
+        </Link>
+        {user && (
+          <>
+            <Link to="/dashboard" className={`nav-link text-[10px] font-bold uppercase tracking-[0.2em] ${location.pathname === '/dashboard' ? 'text-[#3291ff]' : 'text-[#C0C6D5]'}`}>
+              Dashboard
+            </Link>
+            <Link to="/workspace" className={`nav-link text-[10px] font-bold uppercase tracking-[0.2em] ${location.pathname === '/workspace' ? 'text-[#3291ff]' : 'text-[#C0C6D5]'}`}>
               Workspace
             </Link>
-          )}
-        </div>
+          </>
+        )}
+      </div>
 
+      <div className="flex items-center gap-4">
         {user ? (
-          <div className="flex items-center gap-4">
-            <span className="hidden text-[10px] font-bold uppercase tracking-widest text-yellow-200/50 sm:block">
-              {user.username}
-            </span>
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2 px-3 py-1 rounded bg-white/5 border border-white/5">
+              <div className="h-1.5 w-1.5 rounded-full bg-[#9ece6a] shadow-[0_0_8px_#9ece6a]" />
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#E2E2E3]">
+                {user.username}
+              </span>
+            </div>
             <button
               onClick={handleLogout}
-              className="kinetic-button rounded-full border border-white/15 px-4 py-2.5 text-xs font-bold uppercase tracking-[0.16em] text-white hover:border-white/40 transition sm:px-5 sm:py-3 sm:text-sm"
+              className="text-[10px] font-bold uppercase tracking-widest text-[#C0C6D5] hover:text-[#ffb4ab] transition-colors"
             >
-              Logout
+              Sign Out
             </button>
           </div>
         ) : (
-          <Link
-            to="/login"
-            className="kinetic-button rounded-full bg-yellow-300 px-4 py-2.5 text-xs font-bold uppercase tracking-[0.16em] text-black transition hover:bg-yellow-200 sm:px-5 sm:py-3 sm:text-sm sm:tracking-[0.2em]"
-          >
-            Open Login
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link
+              to="/login"
+              className="text-[10px] font-bold uppercase tracking-widest text-[#C0C6D5] hover:text-white"
+            >
+              Login
+            </Link>
+            <Link
+              to="/signup"
+              className="btn-primary py-1.5 px-6 text-[10px] font-bold uppercase tracking-[0.1em]"
+            >
+              Initialize Access
+            </Link>
+          </div>
         )}
       </div>
-    </div>
+    </nav>
   );
 };
 

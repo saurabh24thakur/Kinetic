@@ -1,25 +1,33 @@
-import { useState } from "react";
-import { Link } from "react-router";
+import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../context/useAuth.js";
 import { generateCode } from "../../lib/api.js";
 
 const WorkSpace = () => {
+  const { user: currentUser, isLoading: isAuthLoading } = useAuth();
   const [prompt, setPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [generatedCode, setGeneratedCode] = useState("");
   const [generationError, setGenerationError] = useState("");
-  const [history, setHistory] = useState([
-    { id: 1, title: "Modern Dashboard", date: "2m ago" },
-    { id: 2, title: "Auth Flow Refactor", date: "1h ago" },
-    { id: 3, title: "Glassmorphism UI Kit", date: "Yesterday" },
+  const [terminalOutput, setTerminalOutput] = useState([
+    { type: 'system', content: '[10:24:02] Starting compilation...' },
+    { type: 'system', content: '[10:24:05] Finished compilation in 3402ms' },
+    { type: 'link', content: 'Server running at http://localhost:3000', url: 'http://localhost:3000' }
   ]);
-  const { isLoading: isAuthLoading, user: currentUser } = useAuth();
+
+  const chatEndRef = useRef(null);
+  
+  const scrollToBottom = () => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [isLoading]);
 
   const handleGenerate = async () => {
     if (!prompt.trim()) return;
     
     setIsLoading(true);
-    setGeneratedCode("");
     setGenerationError("");
     
     try {
@@ -27,21 +35,17 @@ const WorkSpace = () => {
       
       if (response.success) {
         setGeneratedCode(response.generatedCode);
-        
-        const newHistoryItem = {
-          id: Date.now(),
-          title: prompt.slice(0, 20) + (prompt.length > 20 ? "..." : ""),
-          date: "Just now"
-        };
-        setHistory((currentHistory) => [newHistoryItem, ...currentHistory]);
+        setTerminalOutput(prev => [
+          ...prev, 
+          { type: 'command', content: `Applying neural patch: ${prompt.slice(0, 30)}...` },
+          { type: 'system', content: '[SYSTEM] Synthesis complete. Hot reload active.' }
+        ]);
+        setPrompt("");
       } else {
         setGenerationError(response.message || "Generation failed.");
       }
     } catch (error) {
-      const quotaMessage = error.status === 429
-        ? `${error.message} ${error.details?.error || ""}`.trim()
-        : error.message || "Failed to reach generation engine.";
-      setGenerationError(quotaMessage);
+      setGenerationError(error.message || "Engine connection failure.");
     } finally {
       setIsLoading(false);
     }
@@ -49,192 +53,293 @@ const WorkSpace = () => {
 
   if (isAuthLoading) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center text-sm uppercase tracking-[0.24em] text-white/40">
-        Loading session...
-      </div>
-    );
-  }
-
-  if (!currentUser) {
-    return (
-      <div className="flex min-h-[60vh] flex-col items-center justify-center space-y-8 text-center">
-        <div className="kinetic-reveal space-y-4" style={{ "--delay": "100ms" }}>
-          <p className="text-xs font-bold uppercase tracking-[0.4em] text-yellow-300/60">Protected Layer</p>
-          <h1 className="text-4xl font-black uppercase tracking-tight sm:text-6xl">Workspace Locked</h1>
-          <p className="mx-auto max-w-md text-sm leading-7 text-white/40">
-            You must be authenticated to access the Kinetic generation engine.
-          </p>
-        </div>
-        <Link
-          to="/login"
-          className="kinetic-reveal kinetic-button rounded-full bg-yellow-300 px-8 py-4 text-xs font-black uppercase tracking-[0.2em] text-black transition hover:bg-yellow-200"
-          style={{ "--delay": "200ms" }}
-        >
-          Unlock Workspace
-        </Link>
+      <div className="flex h-screen items-center justify-center bg-[#121415] text-[10px] font-bold uppercase tracking-[0.4em] text-[#C0C6D5]">
+        Initializing_Neural_Link...
       </div>
     );
   }
 
   return (
-    <div className="flex h-[calc(100vh-140px)] gap-6 overflow-hidden">
-      <aside className="kinetic-reveal hidden w-64 flex-col border-r border-white/5 pr-6 lg:flex" style={{ "--delay": "100ms" }}>
-        <div className="flex items-center justify-between pb-6">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">Generation History</p>
-          <button className="text-white/40 hover:text-white transition" onClick={() => {setPrompt(""); setGeneratedCode("");}}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-          </button>
+    <div className="fixed inset-0 z-[100] flex flex-col bg-[#121415] text-[#E2E2E3] font-body overflow-hidden">
+      {/* TopNavBar (The Monolithic Anchor) */}
+      <header className="flex justify-between items-center px-4 w-full h-10 bg-[#121415] border-b border-white/5 z-50">
+        <div className="flex items-center gap-6">
+          <span className="text-sm font-black text-[#E2E2E3] tracking-tighter uppercase">Obsidian AI</span>
+          <nav className="hidden md:flex gap-4">
+            {['File', 'Edit', 'Selection', 'View', 'Go'].map((item, idx) => (
+              <button key={item} className={`text-xs uppercase tracking-widest transition-colors ${idx === 0 ? 'text-[#3291ff] font-bold' : 'text-[#C0C6D5] hover:bg-[#282A2B] px-1'}`}>
+                {item}
+              </button>
+            ))}
+          </nav>
         </div>
-        
-        <div className="flex-1 space-y-2 overflow-y-auto pr-2">
-          {history.map((item) => (
-            <div 
-              key={item.id} 
-              className="group cursor-pointer rounded-xl border border-transparent p-3 transition hover:border-white/10 hover:bg-white/[0.03]"
-              onClick={() => {
-                if (item.id === 1 || item.id === 2 || item.id === 3) return;
-              }}
-            >
-              <h4 className="text-[11px] font-bold uppercase tracking-wide text-white/70 group-hover:text-yellow-200 transition">{item.title}</h4>
-              <p className="mt-1 text-[9px] text-white/30 uppercase tracking-widest">{item.date}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-auto border-t border-white/5 pt-6">
-          <div className="flex items-center gap-3 rounded-2xl bg-white/[0.02] p-3 border border-white/5">
-            <div className="h-8 w-8 rounded-full bg-yellow-300 flex items-center justify-center text-[10px] font-black text-black uppercase">
-              {currentUser.username[0]}
-            </div>
-            <div className="min-w-0">
-              <p className="truncate text-[10px] font-bold uppercase text-white">{currentUser.username}</p>
-              <p className="truncate text-[9px] text-white/30">Free Tier</p>
-            </div>
+        <div className="flex items-center gap-2">
+          <div className="bg-[#1a1c1d] px-3 py-1 rounded-lg flex items-center gap-2 border border-white/5">
+            <span className="material-symbols-outlined text-[#c0c6d5] scale-75">search</span>
+            <span className="text-[10px] text-[#c0c6d5] font-mono">CMD + P</span>
+          </div>
+          <div className="flex items-center ml-4 gap-3">
+            <span className="material-symbols-outlined text-[#C0C6D5] cursor-pointer hover:bg-[#282A2B] p-1">splitscreen</span>
+            <span className="material-symbols-outlined text-[#C0C6D5] cursor-pointer hover:bg-[#282A2B] p-1">dock_to_right</span>
+            <span className="material-symbols-outlined text-[#C0C6D5] cursor-pointer hover:bg-[#282A2B] p-1">close</span>
           </div>
         </div>
-      </aside>
+      </header>
 
-      <main className="kinetic-reveal flex flex-1 flex-col rounded-[2.5rem] border border-white/10 bg-black/40 backdrop-blur-sm shadow-2xl overflow-hidden" style={{ "--delay": "200ms" }}>
-        <div className="flex items-center justify-between border-b border-white/5 px-8 py-4 bg-white/[0.01]">
-          <div className="flex items-center gap-4">
-            <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-yellow-300">Kinetic Shell v.01</span>
-            <span className="h-1 w-1 rounded-full bg-white/20" />
-            <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/30">Untitled Project</span>
+      <div className="flex flex-1 overflow-hidden">
+        {/* SideNavBar (The Rail) */}
+        <aside className="w-16 flex flex-col items-center py-4 bg-[#0C0E0F] border-r border-white/5">
+          <div className="flex flex-col gap-6 items-center w-full">
+            <div className="w-full flex justify-center py-2 text-[#3291ff] border-l-2 border-[#3291ff] bg-[#282A2B]/10">
+              <span className="material-symbols-outlined">folder_open</span>
+            </div>
+            {['search', 'account_tree', 'extension'].map(icon => (
+              <div key={icon} className="w-full flex justify-center py-2 text-[#C0C6D5] opacity-60 hover:bg-[#282A2B] hover:text-[#E2E2E3] transition-all cursor-pointer">
+                <span className="material-symbols-outlined">{icon}</span>
+              </div>
+            ))}
           </div>
-          <div className="flex items-center gap-3">
-            <button className="rounded-full border border-white/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-white/60 hover:border-white/30 hover:text-white transition">
-              Share
-            </button>
-            <button className="rounded-full bg-white/5 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-white/90 hover:bg-white/10 transition">
-              Publish
-            </button>
+          <div className="mt-auto flex flex-col gap-6 items-center w-full pb-4">
+            <div className="w-full flex justify-center py-2 text-[#C0C6D5] opacity-60 hover:bg-[#282A2B] cursor-pointer">
+              <span className="material-symbols-outlined">account_circle</span>
+            </div>
+            <div className="w-full flex justify-center py-2 text-[#C0C6D5] opacity-60 hover:bg-[#282A2B] cursor-pointer">
+              <span className="material-symbols-outlined">settings</span>
+            </div>
           </div>
-        </div>
+        </aside>
 
-        <div className="flex-1 overflow-y-auto p-8 lg:p-12">
-          {!generatedCode ? (
-            <div className="mx-auto max-w-3xl space-y-8">
-              <div className="space-y-4">
-                <h2 className="text-3xl font-black uppercase tracking-tight text-white sm:text-4xl">What are we building today?</h2>
-                <p className="text-sm leading-relaxed text-white/40">
-                  Describe your interface, logic, or flow. Kinetic will break it down into atomic components 
-                  and backend-ready schemas.
-                </p>
+        {/* Main Workspace Layout */}
+        <main className="flex flex-1 overflow-hidden">
+          {/* File Explorer Sidebar */}
+          <section className="w-64 bg-[#0c0e0f] border-r border-white/5 flex flex-col">
+            <div className="p-4 flex justify-between items-center">
+              <h2 className="text-[10px] font-bold uppercase tracking-widest text-[#c0c6d5]">Explorer</h2>
+              <span className="material-symbols-outlined text-[#c0c6d5] scale-75 cursor-pointer">more_horiz</span>
+            </div>
+            <div className="flex-1 overflow-y-auto custom-scrollbar">
+              <div className="px-2">
+                <div className="flex items-center gap-2 py-1 px-2 text-[#e2e2e3] hover:bg-[#282a2b] cursor-pointer rounded">
+                  <span className="material-symbols-outlined text-xs">expand_more</span>
+                  <span className="text-xs font-semibold">KINETIC-PROJECT</span>
+                </div>
+                <div className="ml-4 mt-1 border-l border-white/5">
+                  <div className="flex items-center gap-2 py-1 px-4 text-[#c0c6d5] hover:bg-[#282a2b] cursor-pointer transition-colors group">
+                    <span className="material-symbols-outlined text-xs text-[#a7c8ff]">folder</span>
+                    <span className="text-xs">src</span>
+                  </div>
+                  <div className="ml-4">
+                    <div className={`flex items-center gap-2 py-1 px-4 text-[#e2e2e3] hover:bg-[#282a2b] cursor-pointer relative ${generatedCode ? 'bg-[#282a2b]' : ''}`}>
+                      {generatedCode && <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-[#3291ff]"></div>}
+                      <span className="material-symbols-outlined text-xs text-[#3291ff]">description</span>
+                      <span className="text-xs font-medium">App.tsx</span>
+                    </div>
+                    <div className="flex items-center gap-2 py-1 px-4 text-[#c0c6d5] hover:bg-[#282a2b] cursor-pointer">
+                      <span className="material-symbols-outlined text-xs">description</span>
+                      <span className="text-xs">Layout.css</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 py-1 px-4 text-[#c0c6d5] hover:bg-[#282a2b] cursor-pointer">
+                    <span className="material-symbols-outlined text-xs text-[#e07302]">description</span>
+                    <span className="text-xs">package.json</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Code Editor Center */}
+          <section className="flex-1 flex flex-col bg-[#121415] overflow-hidden">
+            {/* Tabs */}
+            <div className="flex bg-[#0c0e0f] h-9">
+              <div className="flex items-center px-4 gap-2 bg-[#121415] text-[#e2e2e3] border-t-2 border-[#3291ff] text-xs cursor-pointer min-w-[140px]">
+                <span className="material-symbols-outlined text-[14px] text-[#3291ff]">description</span>
+                <span>App.tsx</span>
+                <span className="material-symbols-outlined text-[14px] ml-auto hover:bg-white/10 rounded">close</span>
+              </div>
+            </div>
+
+            {/* Editor Surface */}
+            <div className="flex-1 flex flex-col relative overflow-hidden font-mono text-[13px] leading-relaxed">
+              <div className="flex-1 overflow-auto custom-scrollbar flex p-4 bg-[#121415]">
+                {/* Line Numbers */}
+                <div className="w-10 text-right pr-4 text-[#414753] select-none opacity-50">
+                  {Array.from({ length: 25 }, (_, i) => (
+                    <div key={i}>{i + 1}</div>
+                  ))}
+                </div>
+                {/* Code Area */}
+                <div className="flex-1 whitespace-pre">
+                  {generatedCode ? (
+                    <div className="text-[#a7c8ff]">
+                      {generatedCode.split('\n').map((line, i) => (
+                        <div key={i} className="hover:bg-white/5 px-1">{line || ' '}</div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div>
+                      <span className="syntax-keyword">import</span> React <span className="syntax-keyword">from</span> <span className="syntax-string">'react'</span>;
+                      <br />
+                      <br />
+                      <span className="syntax-comment">// Kinetic neural engine waiting for synthesis...</span>
+                      <br />
+                      <span className="syntax-keyword">export const</span> <span className="syntax-function">App</span> = () <span className="syntax-keyword">=&gt;</span> &#123;
+                      <br />
+                      {'  '}<span class="syntax-keyword">return</span> (
+                      <br />
+                      {'    '}<span class="syntax-variable">&lt;div&gt;</span>Initialize via Assistant on the right<span class="syntax-variable">&lt;/div&gt;</span>
+                      <br />
+                      {'  '});
+                      <br />
+                      &#125;;
+                    </div>
+                  )}
+                </div>
               </div>
 
+              {/* Integrated Terminal (Submerged Layer) */}
+              <div className="h-48 bg-[#0c0e0f] border-t border-white/5 flex flex-col">
+                <div className="flex items-center gap-6 px-4 h-8 bg-[#1a1c1d] border-b border-white/5">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#3291ff] border-b-2 border-[#3291ff] h-full flex items-center">Terminal</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#c0c6d5] cursor-pointer">Debug Console</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#c0c6d5] cursor-pointer">Output</span>
+                </div>
+                <div className="flex-1 p-4 font-mono text-xs overflow-y-auto custom-scrollbar">
+                  <div className="flex gap-2 text-[#c0c6d5]">
+                    <span className="text-[#3291ff]">➜</span>
+                    <span className="text-[#9ece6a]">kinetic-project</span>
+                    <span className="text-[#e2e2e3]">git:(</span><span className="text-[#ffb4ab]">main</span><span className="text-[#e2e2e3]">)</span>
+                    <span className="text-[#e2e2e3]">npm start</span>
+                  </div>
+                  <div className="mt-2 space-y-1">
+                    {terminalOutput.map((line, idx) => (
+                      <div key={idx} className={line.type === 'link' ? 'text-[#3291ff] underline cursor-pointer' : 'text-[#c0c6d5]'}>
+                        {line.content}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex gap-2 mt-2">
+                    <span className="text-[#3291ff]">➜</span>
+                    <span className="w-1.5 h-4 bg-[#3291ff] animate-pulse"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* AI Chat Sidebar (The Oracle) */}
+          <section className="w-80 bg-[#1a1c1d] border-l border-white/5 flex flex-col relative">
+            <div className="p-4 border-b border-white/5 flex justify-between items-center bg-[#0c0e0f]/50 backdrop-blur-xl">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-[#3291ff] animate-pulse">auto_awesome</span>
+                <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#e2e2e3]">Neural Assistant</span>
+              </div>
+              <span className="material-symbols-outlined text-[#c0c6d5] scale-75 cursor-pointer hover:text-white">close</span>
+            </div>
+
+            {/* Chat History */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-6 custom-scrollbar">
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-[9px] text-[#c0c6d5] font-bold uppercase tracking-wider">
+                    <span className="material-symbols-outlined text-xs">account_circle</span>
+                    {currentUser?.username || 'User'}
+                  </div>
+                  <div className="bg-[#1e2021] p-3 rounded-lg text-xs leading-relaxed border border-white/5 text-[#c0c6d5]">
+                    Describe the component architecture you wish to synthesize. 
+                    I can generate full-stack prototypes from natural language.
+                  </div>
+                </div>
+
+                {isLoading && (
+                  <div className="space-y-2 animate-pulse">
+                    <div className="flex items-center gap-2 text-[9px] text-[#3291ff] font-bold uppercase tracking-wider">
+                      <span className="material-symbols-outlined text-xs">auto_awesome</span>
+                      Kinetic AI
+                    </div>
+                    <div className="bg-[#282a2b] p-3 rounded-lg text-xs leading-relaxed border border-[#3291ff]/20 text-[#a7c8ff]">
+                      Synthesizing neural pathways...
+                    </div>
+                  </div>
+                )}
+
+                {generationError && (
+                  <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] uppercase font-bold tracking-widest">
+                    SYSTEM_ERROR: {generationError}
+                  </div>
+                )}
+              </div>
+              <div ref={chatEndRef} />
+            </div>
+
+            {/* AI Input */}
+            <div className="p-4 bg-[#0c0e0f] border-t border-white/5">
               <div className="relative group">
-                <div className="absolute -inset-0.5 rounded-[2rem] bg-gradient-to-r from-yellow-300/0 via-yellow-300/10 to-transparent opacity-0 blur-xl transition group-focus-within:opacity-100" />
-                <textarea
+                <textarea 
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   disabled={isLoading}
-                  placeholder="E.g. A sleek, high-conversion landing page for a SaaS platform with pricing cards and a glassmorphism navbar..."
-                  className="relative min-h-[300px] w-full rounded-[2rem] border border-white/10 bg-white/[0.03] p-8 text-lg leading-relaxed text-white placeholder:text-white/10 outline-none transition focus:border-yellow-300/40 focus:bg-white/[0.05] disabled:opacity-50"
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
                       handleGenerate();
                     }
                   }}
+                  className="w-full bg-[#1e2021] p-3 pr-10 rounded-xl text-xs border border-transparent focus:border-[#3291ff]/40 shadow-inner outline-none resize-none min-h-[100px] transition-all text-[#e2e2e3] placeholder:text-white/10" 
+                  placeholder="Ask AI to build something..."
                 />
-                
-                <div className="absolute bottom-6 right-6 flex items-center gap-4">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-white/20 hidden sm:block">⌘ + Enter to generate</span>
-                  <button 
-                    disabled={isLoading || !prompt.trim()}
-                    className="flex h-12 w-12 items-center justify-center rounded-full bg-yellow-300 text-black shadow-lg shadow-yellow-300/20 transition hover:scale-105 hover:bg-yellow-200 active:scale-95 disabled:opacity-50 disabled:scale-100 disabled:hover:bg-yellow-300"
-                    onClick={handleGenerate}
-                  >
-                    {isLoading ? (
-                      <div className="h-5 w-5 animate-spin rounded-full border-2 border-black border-t-transparent" />
-                    ) : (
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M13 18l6-6-6-6"/></svg>
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              {generationError ? (
-                <div className="rounded-2xl border border-amber-300/20 bg-amber-300/5 px-5 py-4 text-sm leading-6 text-amber-100">
-                  {generationError}
-                </div>
-              ) : null}
-
-              {!isLoading && (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  {[
-                    "Create a multi-step signup form",
-                    "Design a dark-mode analytics dashboard",
-                    "Build a premium product gallery",
-                    "Schema for a real-time chat app"
-                  ].map((text) => (
-                    <button 
-                      key={text}
-                      onClick={() => setPrompt(text)}
-                      className="text-left rounded-2xl border border-white/5 bg-white/[0.02] p-4 text-[11px] font-bold uppercase tracking-wider text-white/30 transition hover:border-white/20 hover:bg-white/5 hover:text-white/70"
-                    >
-                      {text}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="mx-auto max-w-5xl h-full flex flex-col space-y-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-xl font-black uppercase tracking-tight text-white mb-2">Generated Kinetic Module</h3>
-                  <div className="flex items-center gap-4">
-                    <span className="px-2 py-0.5 rounded-md bg-white/5 text-[9px] font-bold uppercase tracking-widest text-white/40">React v19</span>
-                    <span className="px-2 py-0.5 rounded-md bg-white/5 text-[9px] font-bold uppercase tracking-widest text-white/40">Tailwind CSS</span>
-                  </div>
-                </div>
                 <button 
-                  onClick={() => setGeneratedCode("")}
-                  className="text-[10px] font-bold uppercase tracking-widest text-white/30 hover:text-yellow-300 transition"
+                  onClick={handleGenerate}
+                  disabled={isLoading || !prompt.trim()}
+                  className="absolute bottom-3 right-3 p-1.5 bg-[#3291ff] rounded-lg text-white shadow-lg hover:bg-[#a7c8ff] transition-all disabled:opacity-20 active:scale-95"
                 >
-                  Edit Prompt
+                  <span className="material-symbols-outlined text-sm">send</span>
                 </button>
               </div>
-              
-              <div className="relative flex-1 group">
-                <div className="absolute top-4 right-4 z-10">
-                  <button 
-                    onClick={() => navigator.clipboard.writeText(generatedCode)}
-                    className="flex bg-black/60 backdrop-blur-md items-center gap-2 rounded-lg border border-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-white/60 hover:text-white transition"
-                  >
-                    Copy
-                  </button>
-                </div>
-                <div className="h-full w-full rounded-[2rem] border border-white/10 bg-white/[0.03] overflow-hidden">
-                  <pre className="h-full p-8 overflow-auto text-sm leading-relaxed text-yellow-200/80 font-mono scrollbar-hide">
-                    <code>{generatedCode}</code>
-                  </pre>
-                </div>
+              <div className="flex justify-between mt-2 px-1">
+                <span className="text-[9px] text-[#c0c6d5] flex items-center gap-1 uppercase tracking-tighter opacity-40">
+                  <span className="material-symbols-outlined text-[10px]">bolt</span>
+                  Pro_Engine_v2
+                </span>
+                <span className="text-[9px] text-[#c0c6d5] uppercase tracking-tighter opacity-40">
+                  Secure_Session
+                </span>
               </div>
             </div>
-          )}
+          </section>
+        </main>
+      </div>
+
+      {/* Footer (The Submerged Layer) */}
+      <footer className="w-full flex justify-between items-center px-3 border-t border-white/5 z-50 bg-[#0C0E0F] h-6 flex-shrink-0">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1 bg-[#2E90FF]/20 px-2 h-full cursor-pointer hover:bg-[#2E90FF]/30 transition-colors">
+            <span className="material-symbols-outlined text-[10px] text-[#2E90FF]">account_tree</span>
+            <span className="font-mono text-[10px] uppercase text-[#E2E2E3]">main*</span>
+          </div>
+          <div className="flex items-center gap-4 ml-2">
+            <div className="flex items-center gap-1">
+              <span className="material-symbols-outlined text-[10px] text-[#ffb4ab]">error</span>
+              <span className="font-mono text-[10px] uppercase text-[#c0c6d5]">0</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <span className="material-symbols-outlined text-[10px] text-[#ffb785]">warning</span>
+              <span className="font-mono text-[10px] uppercase text-[#c0c6d5]">2</span>
+            </div>
+          </div>
         </div>
-      </main>
+        <div className="flex items-center h-full font-mono text-[10px] uppercase text-[#c0c6d5]">
+          <div className="px-3 hover:bg-[#282a2b] h-full flex items-center cursor-pointer">
+            UTF-8
+          </div>
+          <div className="px-3 hover:bg-[#282a2b] h-full flex items-center cursor-pointer">
+            TypeScript JSX
+          </div>
+          <div className="px-3 bg-[#3291ff]/10 h-full flex items-center cursor-pointer border-l border-white/5 text-[#3291ff]">
+            v1.0.0-stable
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

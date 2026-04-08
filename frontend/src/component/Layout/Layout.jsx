@@ -1,32 +1,30 @@
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import Navbar from "../Navbar/Navbar.jsx";
 import Footer from "../footer/Footer.jsx";
 
 const Layout = () => {
+  const location = useLocation();
+  const isWorkspace = location.pathname === "/workspace";
+
   return (
-    <div className="kinetic-page min-h-screen bg-black text-white selection:bg-yellow-300 selection:text-black">
-      {/* Ambient Background Elements - Persistent across routes */}
-      <div className="kinetic-ambient-grid" />
-      <div className="kinetic-ambient-scan" />
-      <div className="kinetic-ambient-beam" />
-      
-      {/* Dynamic Blobs for Depth */}
-      <div className="pointer-events-none fixed left-[10%] top-[16%] h-64 w-64 rounded-full bg-yellow-300/5 blur-3xl kinetic-float-soft" />
-      <div className="pointer-events-none fixed right-[8%] top-[10%] h-80 w-80 rounded-full bg-sky-400/5 blur-3xl kinetic-float-soft" style={{ animationDelay: "1s" }} />
-      <div className="pointer-events-none fixed bottom-[10%] left-[20%] h-72 w-72 rounded-full bg-purple-500/5 blur-3xl kinetic-float-soft" style={{ animationDelay: "2s" }} />
-
-      <div className="relative z-10 px-5 pb-8 pt-4 sm:px-8 sm:pb-12 xl:px-12">
-        <div className="kinetic-page-shell mx-auto flex w-full max-w-[92rem] flex-col gap-8">
-          <Navbar />
-          
-          {/* Main Content Area */}
-          <main className="min-h-[60vh]">
-            <Outlet />
-          </main>
+    <div className={`min-h-screen ${isWorkspace ? 'bg-[#121415]' : 'bg-[var(--surface-dim)]'} text-[var(--on-surface)] selection:bg-[var(--primary)] selection:text-[var(--on-primary)] transition-colors duration-500`}>
+      {/* Ambient Depth Layer */}
+      {!isWorkspace && (
+        <div className="pointer-events-none fixed inset-0 overflow-hidden">
+          <div className="absolute -left-[10%] -top-[10%] h-[40rem] w-[40rem] rounded-full bg-[var(--primary)] opacity-[0.03] blur-[120px]" />
+          <div className="absolute -right-[5%] bottom-[10%] h-[30rem] w-[30rem] rounded-full bg-[var(--primary-container)] opacity-[0.02] blur-[100px]" />
         </div>
-      </div>
+      )}
 
-      <Footer />
+      <div className={`relative z-10 flex flex-col min-h-screen`}>
+        {!isWorkspace && <Navbar />}
+        
+        <main className={`flex-1 flex flex-col ${isWorkspace ? 'h-screen overflow-hidden' : 'w-full max-w-[100rem] mx-auto p-4 sm:p-6 lg:p-8'}`}>
+          <Outlet />
+        </main>
+
+        {!isWorkspace && <Footer />}
+      </div>
     </div>
   );
 };

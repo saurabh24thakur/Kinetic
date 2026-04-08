@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Obsidian AI | Integrated Development Environment</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#c0c6d5",
+                        "on-tertiary-container": "#461f00",
+                        "on-primary-fixed": "#001b3c",
+                        "on-tertiary-fixed-variant": "#713700",
+                        "tertiary-container": "#e07302",
+                        "inverse-surface": "#e2e2e3",
+                        "on-secondary-fixed": "#1a1c1e",
+                        "on-surface": "#e2e2e3",
+                        "secondary-container": "#454749",
+                        "surface-container-highest": "#333536",
+                        "surface-bright": "#38393a",
+                        "primary-fixed": "#d5e3ff",
+                        "secondary": "#c6c6c9",
+                        "primary": "#a7c8ff",
+                        "primary-container": "#3291ff",
+                        "on-tertiary-fixed": "#301400",
+                        "surface-variant": "#333536",
+                        "outline": "#8a919f",
+                        "surface-tint": "#a7c8ff",
+                        "inverse-on-surface": "#2f3132",
+                        "on-error": "#690005",
+                        "tertiary-fixed-dim": "#ffb785",
+                        "on-secondary-fixed-variant": "#454749",
+                        "outline-variant": "#414753",
+                        "surface-container-low": "#1a1c1d",
+                        "secondary-fixed": "#e2e2e5",
+                        "primary-fixed-dim": "#a7c8ff",
+                        "on-background": "#e2e2e3",
+                        "error": "#ffb4ab",
+                        "surface-container-lowest": "#0c0e0f",
+                        "surface-container": "#1e2021",
+                        "surface-container-high": "#282a2b",
+                        "surface-dim": "#121415",
+                        "on-secondary": "#2f3133",
+                        "inverse-primary": "#005eb2",
+                        "on-primary": "#003061",
+                        "error-container": "#93000a",
+                        "surface": "#121415",
+                        "background": "#121415",
+                        "on-tertiary": "#502500",
+                        "on-primary-fixed-variant": "#004788",
+                        "tertiary": "#ffb785",
+                        "tertiary-fixed": "#ffdcc6",
+                        "on-secondary-container": "#b4b5b7",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-container": "#002a55",
+                        "secondary-fixed-dim": "#c6c6c9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"],
+                        "mono": ["JetBrains Mono"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 18px;
+        }
+        body {
+            background-color: #121415;
+            color: #e2e2e3;
+            overflow: hidden;
+        }
+        .syntax-keyword { color: #bb9af7; }
+        .syntax-string { color: #9ece6a; }
+        .syntax-function { color: #7aa2f7; }
+        .syntax-comment { color: #565f89; font-style: italic; }
+        .syntax-variable { color: #e0af68; }
+        .syntax-type { color: #2ac3de; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #333536; border-radius: 10px; }
+    </style>
+</head>
+<body class="font-body selection:bg-primary/30">
+<!-- TopNavBar (The Monolithic Anchor) -->
+<header class="flex justify-between items-center px-4 w-full h-10 bg-[#121415] border-b border-white/5 fixed top-0 left-0 z-50">
+<div class="flex items-center gap-6">
+<span class="text-sm font-black text-[#E2E2E3] tracking-tighter uppercase">Obsidian AI</span>
+<nav class="hidden md:flex gap-4">
+<a class="text-[#2E90FF] font-bold font-['Inter'] text-xs uppercase tracking-widest transition-colors" href="#">File</a>
+<a class="text-[#C0C6D5] font-['Inter'] text-xs uppercase tracking-widest hover:bg-[#282A2B] transition-colors" href="#">Edit</a>
+<a class="text-[#C0C6D5] font-['Inter'] text-xs uppercase tracking-widest hover:bg-[#282A2B] transition-colors" href="#">Selection</a>
+<a class="text-[#C0C6D5] font-['Inter'] text-xs uppercase tracking-widest hover:bg-[#282A2B] transition-colors" href="#">View</a>
+<a class="text-[#C0C6D5] font-['Inter'] text-xs uppercase tracking-widest hover:bg-[#282A2B] transition-colors" href="#">Go</a>
+</nav>
+</div>
+<div class="flex items-center gap-2">
+<div class="bg-surface-container-low px-3 py-1 rounded-lg flex items-center gap-2 border border-white/5">
+<span class="material-symbols-outlined text-on-surface-variant scale-75">search</span>
+<span class="text-[10px] text-on-surface-variant font-mono">CMD + P</span>
+</div>
+<div class="flex items-center ml-4 gap-3">
+<span class="material-symbols-outlined text-[#C0C6D5] cursor-pointer hover:bg-[#282A2B] p-1">splitscreen</span>
+<span class="material-symbols-outlined text-[#C0C6D5] cursor-pointer hover:bg-[#282A2B] p-1">dock_to_right</span>
+<span class="material-symbols-outlined text-[#C0C6D5] cursor-pointer hover:bg-[#282A2B] p-1">close</span>
+</div>
+</div>
+</header>
+<div class="flex h-screen pt-10 pb-6">
+<!-- SideNavBar (The Rail) -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-64px)] w-16 flex flex-col items-center py-4 bg-[#0C0E0F] z-50">
+<div class="flex flex-col gap-6 items-center w-full">
+<div class="w-full flex justify-center py-2 text-[#2E90FF] border-l-2 border-[#2E90FF] bg-[#282A2B]/10">
+<span class="material-symbols-outlined" data-icon="folder_open">folder_open</span>
+</div>
+<div class="w-full flex justify-center py-2 text-[#C0C6D5] opacity-60 hover:bg-[#282A2B] hover:text-[#E2E2E3] transition-opacity duration-150 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</div>
+<div class="w-full flex justify-center py-2 text-[#C0C6D5] opacity-60 hover:bg-[#282A2B] hover:text-[#E2E2E3] transition-opacity duration-150 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+</div>
+<div class="w-full flex justify-center py-2 text-[#C0C6D5] opacity-60 hover:bg-[#282A2B] hover:text-[#E2E2E3] transition-opacity duration-150 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="extension">extension</span>
+</div>
+</div>
+<div class="mt-auto flex flex-col gap-6 items-center w-full pb-4">
+<div class="w-full flex justify-center py-2 text-[#C0C6D5] opacity-60 hover:bg-[#282A2B] hover:text-[#E2E2E3] transition-opacity duration-150 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</div>
+<div class="w-full flex justify-center py-2 text-[#C0C6D5] opacity-60 hover:bg-[#282A2B] hover:text-[#E2E2E3] transition-opacity duration-150 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</div>
+</div>
+</aside>
+<!-- Main Workspace Grid -->
+<main class="ml-16 flex flex-1 overflow-hidden">
+<!-- File Explorer Sidebar -->
+<section class="w-64 bg-surface-container-lowest flex flex-col">
+<div class="p-4 flex justify-between items-center">
+<h2 class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Explorer</h2>
+<span class="material-symbols-outlined text-on-surface-variant scale-75 cursor-pointer">more_horiz</span>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<div class="px-2">
+<div class="flex items-center gap-2 py-1 px-2 text-on-surface hover:bg-surface-container-high cursor-pointer rounded">
+<span class="material-symbols-outlined text-xs">expand_more</span>
+<span class="text-xs font-semibold">OBSIDIAN-PROJECT</span>
+</div>
+<div class="ml-4 mt-1 border-l border-white/5">
+<div class="flex items-center gap-2 py-1 px-4 text-on-surface-variant hover:bg-surface-container-high cursor-pointer transition-colors group">
+<span class="material-symbols-outlined text-xs text-primary">folder</span>
+<span class="text-xs">src</span>
+</div>
+<div class="ml-4">
+<div class="flex items-center gap-2 py-1 px-4 text-on-surface hover:bg-surface-container-high cursor-pointer relative">
+<div class="absolute left-0 top-0 bottom-0 w-[2px] bg-primary"></div>
+<span class="material-symbols-outlined text-xs text-primary-container">description</span>
+<span class="text-xs font-medium">EditorMain.tsx</span>
+</div>
+<div class="flex items-center gap-2 py-1 px-4 text-on-surface-variant hover:bg-surface-container-high cursor-pointer">
+<span class="material-symbols-outlined text-xs text-on-surface-variant">description</span>
+<span class="text-xs">App.css</span>
+</div>
+<div class="flex items-center gap-2 py-1 px-4 text-on-surface-variant hover:bg-surface-container-high cursor-pointer">
+<span class="material-symbols-outlined text-xs text-on-surface-variant">description</span>
+<span class="text-xs">utils.ts</span>
+</div>
+</div>
+<div class="flex items-center gap-2 py-1 px-4 text-on-surface-variant hover:bg-surface-container-high cursor-pointer">
+<span class="material-symbols-outlined text-xs">folder</span>
+<span class="text-xs">public</span>
+</div>
+<div class="flex items-center gap-2 py-1 px-4 text-on-surface-variant hover:bg-surface-container-high cursor-pointer">
+<span class="material-symbols-outlined text-xs text-on-tertiary-fixed-variant">description</span>
+<span class="text-xs">package.json</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Code Editor Center -->
+<section class="flex-1 flex flex-col bg-surface overflow-hidden">
+<!-- Tabs -->
+<div class="flex bg-surface-container-lowest h-9">
+<div class="flex items-center px-4 gap-2 bg-surface text-on-surface border-t-2 border-primary text-xs cursor-pointer min-w-[140px]">
+<span class="material-symbols-outlined text-[14px] text-primary">description</span>
+<span>EditorMain.tsx</span>
+<span class="material-symbols-outlined text-[14px] ml-auto hover:bg-white/10 rounded">close</span>
+</div>
+<div class="flex items-center px-4 gap-2 text-on-surface-variant hover:bg-surface-container text-xs cursor-pointer min-w-[140px]">
+<span class="material-symbols-outlined text-[14px]">description</span>
+<span>App.css</span>
+<span class="material-symbols-outlined text-[14px] ml-auto hover:bg-white/10 rounded opacity-0 group-hover:opacity-100">close</span>
+</div>
+</div>
+<!-- Editor Surface -->
+<div class="flex-1 flex flex-col relative overflow-hidden font-mono text-[13px] leading-relaxed">
+<div class="flex-1 overflow-auto custom-scrollbar p-4 flex">
+<!-- Line Numbers -->
+<div class="w-10 text-right pr-4 text-outline-variant select-none opacity-50">
+                            1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16
+                        </div>
+<!-- Code Area -->
+<div class="flex-1 whitespace-pre">
+<span class="syntax-keyword">import</span> React, { <span class="syntax-variable">useState</span> } <span class="syntax-keyword">from</span> <span class="syntax-string">'react'</span>;
+                            <span class="syntax-keyword">import</span> { <span class="syntax-variable">MonolithicEngine</span> } <span class="syntax-keyword">from</span> <span class="syntax-string">'@obsidian/core'</span>;
+
+                            <span class="syntax-comment">// Initialize the obsidian monolithic interface</span>
+<span class="syntax-keyword">export const</span> <span class="syntax-function">EditorMain</span> = () <span class="syntax-keyword">=&gt;</span> {
+                                <span class="syntax-keyword">const</span> [<span class="syntax-variable">isReady</span>, <span class="syntax-variable">setIsReady</span>] = <span class="syntax-function">useState</span>&lt;<span class="syntax-type">boolean</span>&gt;(<span class="syntax-keyword">false</span>);
+
+                                <span class="syntax-keyword">const</span> <span class="syntax-function">handleInit</span> = (<span class="syntax-variable">config</span>: <span class="syntax-type">ProjectConfig</span>) <span class="syntax-keyword">=&gt;</span> {
+                                    <span class="syntax-variable">console</span>.<span class="syntax-function">log</span>(<span class="syntax-string">"Initializing obsidian core..."</span>);
+                                    <span class="syntax-keyword">return</span> <span class="syntax-variable">MonolithicEngine</span>.<span class="syntax-function">bootstrap</span>(<span class="syntax-variable">config</span>);
+                                };
+
+                                <span class="syntax-keyword">return</span> (
+                                    <span class="syntax-variable">&lt;div</span> <span class="syntax-variable">className</span>=<span class="syntax-string">"editor-root"</span><span class="syntax-variable">&gt;</span>
+<span class="syntax-variable">&lt;Workspace</span> <span class="syntax-variable">onReady</span>={<span class="syntax-keyword">() =&gt;</span> <span class="syntax-function">setIsReady</span>(<span class="syntax-keyword">true</span>)} <span class="syntax-variable">/&gt;</span>
+<span class="syntax-variable">&lt;/div&gt;</span>
+                                );
+                            };
+                        </div>
+</div>
+<!-- Integrated Terminal (Submerged Layer) -->
+<div class="h-40 bg-surface-container-lowest border-t border-white/5 flex flex-col">
+<div class="flex items-center gap-6 px-4 h-8 bg-surface-container-low border-b border-white/5">
+<span class="text-[10px] font-bold uppercase tracking-widest text-primary border-b-2 border-primary h-full flex items-center">Terminal</span>
+<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant cursor-pointer">Debug Console</span>
+<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant cursor-pointer">Output</span>
+<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant cursor-pointer">Problems</span>
+</div>
+<div class="flex-1 p-4 font-mono text-xs overflow-y-auto custom-scrollbar">
+<div class="flex gap-2 text-on-surface-variant">
+<span class="text-primary-container">➜</span>
+<span class="text-[#9ece6a]">obsidian-project</span>
+<span class="text-on-surface">git:(</span><span class="text-error">main</span><span class="text-on-surface">)</span>
+<span class="text-on-surface">npm start</span>
+</div>
+<div class="mt-2 text-on-surface-variant">
+                                [10:24:02] Starting compilation...<br/>
+                                [10:24:05] Finished compilation in 3402ms<br/>
+                                Server running at <span class="text-primary underline cursor-pointer">http://localhost:3000</span>
+</div>
+<div class="flex gap-2 mt-2">
+<span class="text-primary-container">➜</span>
+<span class="w-1 h-4 bg-primary animate-pulse"></span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- AI Chat Sidebar (The Oracle) -->
+<section class="w-80 bg-surface-container-low border-l border-white/5 flex flex-col relative">
+<div class="p-4 border-b border-white/5 flex justify-between items-center bg-surface-container-lowest/50 backdrop-blur-xl">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="text-[11px] font-extrabold uppercase tracking-widest text-on-surface">Chat Oracle</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant scale-75 cursor-pointer">close</span>
+</div>
+<!-- Chat History -->
+<div class="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
+<div class="space-y-1">
+<div class="flex items-center gap-2 text-[10px] text-on-surface-variant font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-xs">account_circle</span>
+                            User
+                        </div>
+<div class="bg-surface-container p-3 rounded-lg text-xs leading-relaxed border border-white/5">
+                            How do I optimize the render cycle in the EditorMain component?
+                        </div>
+</div>
+<div class="space-y-1">
+<div class="flex items-center gap-2 text-[10px] text-primary font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                            Obsidian AI
+                        </div>
+<div class="bg-surface-container-high p-3 rounded-lg text-xs leading-relaxed border border-primary/10 shadow-lg">
+                            To optimize <code class="bg-black/20 px-1 rounded text-primary">EditorMain</code>, consider using <code class="bg-black/20 px-1 rounded text-primary">React.memo</code> for the <code class="bg-black/20 px-1 rounded text-primary">Workspace</code> child component. Also, the <code class="bg-black/20 px-1 rounded text-primary">handleInit</code> function should be wrapped in <code class="bg-black/20 px-1 rounded text-primary">useCallback</code> to prevent unnecessary re-initialization of the engine.
+                        </div>
+</div>
+</div>
+<!-- AI Input -->
+<div class="p-4 bg-surface-container-lowest border-t border-white/5">
+<div class="relative group">
+<textarea class="w-full bg-surface-container p-3 pr-10 rounded-xl text-xs border border-transparent focus:border-primary/40 focus:ring-0 outline-none resize-none min-h-[80px] transition-all" placeholder="Ask AI anything..."></textarea>
+<button class="absolute bottom-3 right-3 p-1.5 bg-primary rounded-lg text-on-primary shadow-lg hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-sm">send</span>
+</button>
+</div>
+<div class="flex justify-between mt-2 px-1">
+<span class="text-[9px] text-on-surface-variant flex items-center gap-1 uppercase tracking-tighter">
+<span class="material-symbols-outlined text-[10px]">bolt</span>
+                            Pro Model
+                        </span>
+<span class="text-[9px] text-on-surface-variant uppercase tracking-tighter">
+                            2,401 tokens left
+                        </span>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Footer (The Submerged Layer) -->
+<footer class="fixed bottom-0 left-0 w-full flex justify-between items-center px-3 border-t border-white/5 z-50 bg-[#0C0E0F] h-6">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 bg-[#2E90FF]/20 px-2 h-full cursor-pointer hover:bg-[#2E90FF]/30 transition-colors">
+<span class="material-symbols-outlined text-[10px] text-[#2E90FF]">account_tree</span>
+<span class="font-['JetBrains_Mono'] text-[10px] uppercase text-[#E2E2E3]">main*</span>
+</div>
+<div class="flex items-center gap-1 cursor-pointer">
+<span class="material-symbols-outlined text-[10px] text-error">error</span>
+<span class="font-['JetBrains_Mono'] text-[10px] uppercase text-on-surface-variant">0</span>
+<span class="material-symbols-outlined text-[10px] text-tertiary">warning</span>
+<span class="font-['JetBrains_Mono'] text-[10px] uppercase text-on-surface-variant">2</span>
+</div>
+</div>
+<div class="flex items-center h-full">
+<div class="px-3 hover:bg-[#282A2B] h-full flex items-center cursor-pointer">
+<span class="font-['JetBrains_Mono'] text-[10px] uppercase text-[#C0C6D5]">Spaces: 4</span>
+</div>
+<div class="px-3 hover:bg-[#282A2B] h-full flex items-center cursor-pointer">
+<span class="font-['JetBrains_Mono'] text-[10px] uppercase text-[#C0C6D5]">UTF-8</span>
+</div>
+<div class="px-3 hover:bg-[#282A2B] h-full flex items-center cursor-pointer">
+<span class="font-['JetBrains_Mono'] text-[10px] uppercase text-[#C0C6D5]">TypeScript JSX</span>
+</div>
+<div class="px-3 bg-primary/10 h-full flex items-center cursor-pointer border-l border-white/5">
+<span class="font-['JetBrains_Mono'] text-[10px] uppercase text-primary">v1.0.0-stable</span>
+</div>
+</div>
+</footer>
+</body></html>

@@ -6,198 +6,167 @@ import { useAuth } from "../../context/useAuth.js";
 const workflowSteps = [
   {
     id: "01",
-    title: "Create an account",
-    description: "Register or log in with the backend fields.",
+    title: "Project Initiation",
+    description: "Register your domain within the Kinetic neural architecture.",
   },
   {
     id: "02",
-    title: "Enter the workspace",
-    description: "Authenticated users enter the workspace shell.",
+    title: "Neural Synthesis",
+    description: "Interface with the generation engine to construct complex flows.",
   },
   {
     id: "03",
-    title: "Expand the build",
-    description: "Next comes generation routes and project output.",
+    title: "Deployment",
+    description: "Export high-fidelity monoliths ready for deployment.",
   },
 ];
 
 const productSignals = [
-  "Structured around real frontend and backend boundaries",
-  "Designed for iterative prototype building instead of one-shot output",
-  "Ready for auth, prompt workflows, and future generation routes",
+  "Bespoke Monolithic Architecture",
+  "Neural-assisted Synthesis",
+  "High-Precision Output",
 ];
 
 const motionSignals = [
-  "Auth-first flow",
-  "Backend-aware entry",
-  "Prompt workspace",
-  "Live route structure",
-  "Product motion system",
+  "Neural Synthesis",
+  "Obsidian Interface",
+  "Digital Monolith",
+  "Zen Evolution",
+  "Electric Precision",
 ];
 
 const LandingPage = () => {
   const { user } = useAuth();
 
   return (
-    <>
-      <main className="grid gap-10 lg:grid-cols-[1.35fr_0.65fr] lg:items-end xl:gap-16">
-        <section className="space-y-6 pt-2 sm:pt-4">
-          <div className="space-y-2">
-            <h1
-              className="kinetic-title-line text-5xl font-black uppercase leading-none tracking-[-0.06em] sm:text-7xl lg:text-[7.5rem] xl:text-[8rem]"
-              style={{ "--delay": "190ms" }}
-            >
-              Create
-            </h1>
-            <h1
-              className="kinetic-title-line text-5xl font-black uppercase leading-none tracking-[-0.06em] text-white/20 line-through sm:text-7xl lg:text-[7.5rem] xl:text-[8rem]"
-              style={{ "--delay": "260ms" }}
-            >
-              a prototype
-            </h1>
-            <h1
-              className="kinetic-title-line text-5xl font-black uppercase leading-none tracking-[-0.06em] text-white/20 line-through sm:text-7xl lg:text-[7.5rem] xl:text-[8rem]"
-              style={{ "--delay": "260ms" }}
-            >
-              that look
-            </h1>
-            <h1
-              className="kinetic-title-line text-5xl font-black uppercase leading-none tracking-[-0.06em] text-white/20 line-through sm:text-7xl lg:text-[7.5rem] xl:text-[8rem]"
-              style={{ "--delay": "260ms" }}
-            >
-              & feel like 
-            </h1>
-            <h1
-              className="kinetic-title-line text-5xl font-black uppercase leading-none tracking-[-0.06em] sm:text-7xl lg:text-[7.5rem] xl:text-[8rem]"
-              style={{ "--delay": "330ms" }}
-            >
-              real app
+    <div className="space-y-32 pb-32">
+      {/* Hero Section */}
+      <main className="reveal grid gap-16 pt-12 lg:grid-cols-[1.3fr_0.7fr] lg:items-center">
+        <section className="space-y-10">
+          <div className="space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--surface-container-high)] border border-[var(--outline-variant)]">
+              <div className="h-1.5 w-1.5 rounded-full bg-[var(--primary)] shadow-[0_0_8px_var(--primary)]" />
+              <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--on-surface-variant)] leading-none">Version 2.0_Obsidian</span>
+            </div>
+            <h1 className="text-6xl font-bold tracking-tight text-[var(--on-surface)] sm:text-8xl xl:text-9xl leading-[0.9]">
+              Neural_ <br />
+              <span className="text-[var(--primary)]">Architecture</span>
             </h1>
           </div>
 
-          <div className="kinetic-reveal max-w-3xl space-y-4 text-base text-white/75 sm:text-lg" style={{ "--delay": "390ms" }}>
-            <p>
-              Kinetic is an AI-assisted full stack prototype builder for turning rough ideas into usable product flows.
+          <div className="max-w-xl space-y-8">
+            <p className="text-lg leading-relaxed text-[var(--on-surface-variant)] opacity-70">
+              Kinetic is a high-performance instrument for turning conceptual logic into 
+              sophisticated digital monoliths. Precision by design.
             </p>
+
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <Link
+                to={user ? "/workspace" : "/login"}
+                className="btn-primary px-10 py-4 text-xs font-bold uppercase tracking-[0.2em]"
+              >
+                {user ? "Enter Neural Shell" : "Initialize Access"}
+              </Link>
+              <a
+                href="#flow"
+                className="btn-ghost px-10 py-4 text-xs font-bold uppercase tracking-[0.2em]"
+              >
+                System Workflow
+              </a>
+            </div>
           </div>
 
-          <div className="kinetic-reveal flex flex-col gap-3 sm:flex-row" style={{ "--delay": "450ms" }}>
-            <Link
-              to={user ? "/workspace" : "/login"}
-              className="kinetic-button inline-flex items-center justify-center rounded-full bg-yellow-300 px-6 py-3.5 text-sm font-black uppercase tracking-[0.24em] text-black transition hover:bg-yellow-200"
-            >
-              {user ? "Enter Workspace" : "Open Login"}
-            </Link>
-            <a
-              href="#flow"
-              className="kinetic-button inline-flex items-center justify-center rounded-full border border-white/20 px-6 py-3.5 text-sm font-bold uppercase tracking-[0.2em] text-white/80 transition hover:border-white/40 hover:text-white"
-            >
-              See Workflow
-            </a>
-          </div>
-
-          <div className="kinetic-reveal kinetic-marquee" style={{ "--delay": "520ms" }}>
-            <div className="kinetic-marquee-track">
-              {[...motionSignals, ...motionSignals].map((signal, index) => (
-                <span key={`${signal}-${index}`} className="kinetic-marquee-item">
-                  <span className="kinetic-live-dot" />
-                  {signal}
-                </span>
+          <div className="pt-12 border-t border-[var(--outline-variant)]">
+            <div className="flex flex-wrap gap-x-12 gap-y-6">
+              {motionSignals.map((signal) => (
+                <div key={signal} className="flex items-center gap-3">
+                  <div className="h-1 w-1 rounded-full bg-[var(--primary)] opacity-40" />
+                  <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--on-surface-variant)] opacity-50">{signal}</span>
+                </div>
               ))}
             </div>
           </div>
         </section>
+
+        <section className="hidden lg:block">
+          <div className="aspect-square rounded-2xl bg-gradient-to-br from-[var(--surface-container-high)] to-transparent border border-[var(--outline-variant)] relative overflow-hidden">
+             <div className="absolute inset-0 bg-[var(--primary)] opacity-[0.03] blur-[100px]" />
+             <div className="p-12 h-full flex flex-col justify-between">
+                <div className="space-y-4">
+                  <div className="h-px w-12 bg-[var(--primary)]" />
+                  <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--on-surface-variant)]">StructuralIntegrity</p>
+                </div>
+                <div className="space-y-2 opacity-20">
+                   {[1,2,3,4,5,6].map(i => (
+                     <div key={i} className="h-2 bg-[var(--on-surface)] rounded-full" style={{ width: `${100 - (i*10)}%` }} />
+                   ))}
+                </div>
+             </div>
+          </div>
+        </section>
       </main>
 
+      {/* About Section */}
       <section
         id="about"
-        className="kinetic-reveal bg-white flex-col text-black kinetic-divider grid gap-10 border-t rounded-4xl p-4 pb-4 border-white/10 pt-12 lg:grid-cols-[1fr_1.1fr] lg:pt-16 xl:gap-14"
-        style={{ "--delay": "520ms" }}
+        className="reveal monolith-card p-12 lg:p-24 space-y-12 bg-[var(--surface-container)] border border-[var(--outline-variant)]"
       >
-        <div>
-          <p className="text-xl font-bold uppercase tracking-[0.28em] text-black">How Kinetic Works?</p>
-          <h2 className="mt-4 max-w-3xl text-4xl font-black uppercase tracking-[-0.05em] sm:text-5xl lg:text-[3.4rem]">
-            Kinetic moves from authentication into a workspace where product ideas can turn into usable flows.
+        <div className="max-w-4xl space-y-8">
+          <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--primary)]">The Instrument</p>
+          <h2 className="text-4xl font-bold tracking-tight text-[var(--on-surface)] sm:text-6xl leading-[1.1]">
+            We abandon the template. Kinetic treats the UI as a <span className="text-[var(--on-surface-variant)] opacity-40">Zen-state environment.</span>
           </h2>
+          <p className="text-lg leading-relaxed text-[var(--on-surface-variant)] opacity-70 max-w-2xl">
+            Our design system—Digital Obsidian—prioritizes restraint. We move away from the cluttered density 
+            of traditional editors toward Focused Intentionality.
+          </p>
         </div>
       </section>
 
-      <section
-        className="flex flex-col pb-12 gap-10 border-t border-white/10 pt-12 bg-white w-screen ml-[-2.5vw] justify-center items-center rounded-4xl"
-        style={{ "--delay": "720ms" }}
-      >
-        <h1 className="text-6xl font-bold text-black hero-text">Wasting time making</h1>
-        <h1 className="text-6xl font-bold text-black hero-text">a modern process</h1>
-        <h1 className="text-6xl font-bold text-black hero-text">works?</h1>
-        <br />
-        <div className="p-4 bg-white w-full flex items-center justify-center">
-              <img src={img1} alt="" />
-        </div>
-
-        <h1 className="text-6xl font-bold text-black hero-text">Kinetic connects you</h1>
-        <h1 className="text-6xl font-bold text-black hero-text">directly with the</h1>
-        <h1 className="text-6xl font-bold text-black hero-text">medium?</h1>
-        <hr className="text-red" />
-
-        <div className="p-4 bg-white w-full flex items-center justify-center gap-[3vh]">
-          <div className="r">
-            <h1 className="text-6xl font-bold text-black hero-text">Your design is a</h1>
-            <h1 className="text-6xl font-bold text-black hero-text">living system</h1>
-            <h1 className="text-6xl font-bold text-black hero-text">of the components</h1>
-          </div>
-          <div className="i">
-            <img src={img2} alt="" />
-          </div>
-        </div>
-      </section>
-
+      {/* Workflow Section */}
       <section
         id="flow"
-        className="kinetic-reveal kinetic-divider grid gap-10 border-t border-white/10 pt-12 lg:grid-cols-[1.05fr_0.95fr] lg:pt-16 xl:grid-cols-[1.15fr_0.85fr]"
-        style={{ "--delay": "720ms" }}
+        className="reveal grid gap-16 lg:grid-cols-[1.1fr_0.9fr]"
       >
-        <article className="kinetic-panel">
-          <p className="text-xs font-bold uppercase tracking-[0.28em] text-yellow-200/80">How it flows</p>
-          <div className="mt-6 space-y-6 border-l border-white/10 pl-6 sm:pl-8">
+        <article className="space-y-12">
+          <div className="space-y-4">
+            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--on-surface-variant)] opacity-40">Synthesis_Flow</p>
+            <h3 className="text-3xl font-bold text-[var(--on-surface)] tracking-tight">The Neural Pipeline</h3>
+          </div>
+          
+          <div className="space-y-6">
             {workflowSteps.map((step) => (
-              <div key={step.id} className="kinetic-card relative">
-                <span className="absolute -left-[2.55rem] top-1 sm:-left-[3.05rem]">
-                  <span className="kinetic-live-dot" />
+              <div key={step.id} className="group flex gap-8 p-8 rounded-xl bg-[var(--surface-container-low)] border border-transparent hover:border-[var(--outline-variant)] transition-all">
+                <span className="text-2xl font-black text-[var(--primary)] opacity-20 group-hover:opacity-100 transition-opacity leading-none pt-1">
+                  {step.id}
                 </span>
-                <div className="flex items-start gap-4">
-                  <span className="kinetic-float-soft rounded-full bg-yellow-300 px-3 py-1 text-xs font-black tracking-[0.2em] text-black">
-                    {step.id}
-                  </span>
-                  <div>
-                    <h3 className="text-lg font-bold uppercase tracking-[0.16em] text-white">{step.title}</h3>
-                    <p className="mt-3 leading-7 text-white/70">{step.description}</p>
-                  </div>
+                <div className="space-y-2">
+                  <h4 className="text-lg font-bold text-[var(--on-surface)] uppercase tracking-wider">{step.title}</h4>
+                  <p className="text-sm leading-relaxed text-[var(--on-surface-variant)] opacity-60">{step.description}</p>
                 </div>
               </div>
             ))}
           </div>
         </article>
 
-        <article className="kinetic-panel flex flex-col justify-between gap-10">
-          <p className="text-xs font-bold uppercase tracking-[0.28em] text-white/45">Current status</p>
-          <h2 className="mt-4 max-w-3xl text-3xl font-black uppercase tracking-[-0.04em] text-white sm:text-4xl">
-            The frontend already matches the backend entry flow and leaves clear space for the generation layer.
-          </h2>
-          <p className="mt-4 max-w-3xl text-base leading-7 text-white/70">
-            This is not just a static landing page. It introduces the product, reflects the active backend auth
-            routes, and connects that entry flow to the workspace where future generation actions will live.
-          </p>
-
-          <div className="grid gap-5 border-t border-white/10 pt-6 sm:grid-cols-3">
-            {productSignals.map((signal) => (
-              <p key={signal} className="text-sm leading-7 text-white/75">
-                {signal}
-              </p>
-            ))}
-          </div>
+        <article className="monolith-card p-12 bg-gradient-to-b from-[var(--surface-container-high)] to-[var(--surface-container)] border border-[var(--outline-variant)] flex flex-col justify-center">
+           <div className="space-y-12">
+              <div className="h-2 w-12 bg-[var(--primary)] shadow-[0_0_12px_var(--primary)]" />
+              <h4 className="text-4xl font-bold tracking-tight leading-[1.2]">
+                A living system of components, <span className="text-[var(--on-surface-variant)] opacity-40 italic">not just pixels.</span>
+              </h4>
+              <div className="grid gap-6">
+                {productSignals.map((signal) => (
+                  <div key={signal} className="flex items-center gap-4 text-sm font-bold uppercase tracking-widest text-[var(--on-surface-variant)] opacity-60">
+                    <div className="h-[1px] w-4 bg-[var(--outline)]" />
+                    {signal}
+                  </div>
+                ))}
+              </div>
+           </div>
         </article>
       </section>
-    </>
+    </div>
   );
 };
 
