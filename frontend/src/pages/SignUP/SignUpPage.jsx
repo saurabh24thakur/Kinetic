@@ -3,13 +3,14 @@ import { Link, useNavigate } from "react-router";
 import { useAuth } from "../../context/AuthContext.jsx";
 
 const emptyForm = {
+  username: "",
   email: "",
   password: "",
 };
 
-const LoginPage = () => {
+const SignUpPage = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { register } = useAuth();
   const [form, setForm] = useState(emptyForm);
   const [status, setStatus] = useState({ type: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,20 +29,21 @@ const LoginPage = () => {
     setStatus({ type: "", message: "" });
 
     try {
-      await login({
+      await register({
+        username: form.username.trim(),
         email: form.email.trim(),
         password: form.password,
       });
       setForm(emptyForm);
       setStatus({
         type: "success",
-        message: "Login successful. Redirecting...",
+        message: "Registration successful. Redirecting...",
       });
       setTimeout(() => navigate("/workspace"), 800);
     } catch (error) {
       setStatus({
         type: "error",
-        message: error.message || "Login failed. Please check your credentials.",
+        message: error.message || "Registration failed.",
       });
     } finally {
       setIsSubmitting(false);
@@ -67,7 +69,7 @@ const LoginPage = () => {
                 className="h-1 w-full rounded-full bg-white/5 overflow-hidden"
               >
                 <div 
-                  className={`h-full bg-yellow-300 transition-all duration-700 ${i <= 2 ? 'w-full' : 'w-0'}`}
+                  className={`h-full bg-yellow-300 transition-all duration-700 ${i <= 1 ? 'w-full' : 'w-0'}`}
                   style={{ transitionDelay: `${i * 100}ms` }}
                 />
               </div>
@@ -76,30 +78,43 @@ const LoginPage = () => {
         </div>
 
         <div className="flex items-center gap-8 border-b border-white/10 pb-5">
+           <Link
+            to="/login"
+            className="kinetic-button text-[11px] font-bold uppercase tracking-[0.26em] transition text-white/40 hover:text-white/70"
+          >
+            Login
+          </Link>
           <button
             type="button"
             className="kinetic-button text-[11px] font-bold uppercase tracking-[0.26em] transition text-yellow-200"
           >
-            Login
-          </button>
-          <Link
-            to="/signup"
-            className="kinetic-button text-[11px] font-bold uppercase tracking-[0.26em] transition text-white/40 hover:text-white/70"
-          >
             Register
-          </Link>
+          </button>
         </div>
 
         <div className="mt-8 space-y-3">
           <h2 className="text-3xl font-black uppercase tracking-[-0.05em] sm:text-4xl">
-            Welcome back
+            Create access
           </h2>
           <p className="text-xs leading-6 text-white/50">
-            Verify your identity to enter the workspace.
+            Enter your details to generate a mock session.
           </p>
         </div>
 
         <form className="mt-10 space-y-6" onSubmit={handleSubmit}>
+          <label className="block">
+            <span className="block text-[10px] font-bold uppercase tracking-[0.22em] text-white/40">Username</span>
+            <input
+              type="text"
+              name="username"
+              value={form.username}
+              onChange={updateField}
+              required
+              className="kinetic-input mt-3 w-full border-b border-white/10 bg-transparent pb-3 text-sm text-white outline-none transition placeholder:text-white/20 focus:border-yellow-300/50"
+              placeholder="your-name"
+            />
+          </label>
+
           <label className="block">
             <span className="block text-[10px] font-bold uppercase tracking-[0.22em] text-white/40">Email</span>
             <input
@@ -143,7 +158,7 @@ const LoginPage = () => {
               className="kinetic-button group relative flex w-full items-center justify-center overflow-hidden rounded-full bg-yellow-300 py-4 text-[11px] font-black uppercase tracking-[0.24em] text-black transition hover:bg-yellow-200 disabled:opacity-50"
             >
               <span className="relative z-10 transition-transform group-hover:scale-105">
-                {isSubmitting ? "Processing..." : "Enter Workspace"}
+                {isSubmitting ? "Processing..." : "Create And Enter"}
               </span>
             </button>
           </div>
@@ -157,4 +172,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignUpPage;

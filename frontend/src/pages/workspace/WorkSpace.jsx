@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router";
+import { useAuth } from "../../context/AuthContext.jsx";
+import { generateCode } from "../../lib/api.js";
 
 const workspaceHighlights = [
   {
@@ -24,26 +26,52 @@ const workspaceMotionSignals = [
   "Workspace unlocked",
 ];
 
-function WorkSpace() {
+const WorkSpace = () => {
   const [prompt, setPrompt] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [generatedCode, setGeneratedCode] = useState("");
   const [history, setHistory] = useState([
     { id: 1, title: "Modern Dashboard", date: "2m ago" },
     { id: 2, title: "Auth Flow Refactor", date: "1h ago" },
     { id: 3, title: "Glassmorphism UI Kit", date: "Yesterday" },
   ]);
-  const [currentUser, setCurrentUser] = useState(() => {
-    const savedUser = localStorage.getItem("kinetic-user");
-    return savedUser ? JSON.parse(savedUser) : null;
-  });
+  const { isLoading: isAuthLoading, user: currentUser } = useAuth();
 
-  useEffect(() => {
-    const checkUser = () => {
-      const savedUser = localStorage.getItem("kinetic-user");
-      setCurrentUser(savedUser ? JSON.parse(savedUser) : null);
-    };
-    window.addEventListener('storage', checkUser);
-    return () => window.removeEventListener('storage', checkUser);
-  }, []);
+  const handleGenerate = async () => {
+    if (!prompt.trim()) return;
+    
+    setIsLoading(true);
+    setGeneratedCode("");
+    
+    try {
+      const response = await generateCode({ prompt });
+      
+      if (response.success) {
+        setGeneratedCode(response.generatedCode);
+        
+        const newHistoryItem = {
+          id: Date.now(),
+          title: prompt.slice(0, 20) + (prompt.length > 20 ? "..." : ""),
+          date: "Just now"
+        };
+        setHistory([newHistoryItem, ...history]);
+      } else {
+        alert("Generation failed: " + response.message);
+      }
+    } catch (error) {
+      alert(error.message || "Failed to reach generation engine.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isAuthLoading) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center text-sm uppercase tracking-[0.24em] text-white/40">
+        Loading session...
+      </div>
+    );
+  }
 
   if (!currentUser) {
     return (
@@ -68,11 +96,10 @@ function WorkSpace() {
 
   return (
     <div className="flex h-[calc(100vh-140px)] gap-6 overflow-hidden">
-      {/* SIDEBAR - Minimal Project History */}
       <aside className="kinetic-reveal hidden w-64 flex-col border-r border-white/5 pr-6 lg:flex" style={{ "--delay": "100ms" }}>
         <div className="flex items-center justify-between pb-6">
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">Generation History</p>
-          <button className="text-white/40 hover:text-white transition">
+          <button className="text-white/40 hover:text-white transition" onClick={() => {setPrompt(""); setGeneratedCode("");}}>
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
           </button>
         </div>
@@ -82,6 +109,9 @@ function WorkSpace() {
             <div 
               key={item.id} 
               className="group cursor-pointer rounded-xl border border-transparent p-3 transition hover:border-white/10 hover:bg-white/[0.03]"
+              onClick={() => {
+                if (item.id === 1 || item.id === 2 || item.id === 3) return;
+              }}
             >
               <h4 className="text-[11px] font-bold uppercase tracking-wide text-white/70 group-hover:text-yellow-200 transition">{item.title}</h4>
               <p className="mt-1 text-[9px] text-white/30 uppercase tracking-widest">{item.date}</p>
@@ -102,9 +132,7 @@ function WorkSpace() {
         </div>
       </aside>
 
-      {/* MAIN CONTENT - Clean Prompt Editor */}
       <main className="kinetic-reveal flex flex-1 flex-col rounded-[2.5rem] border border-white/10 bg-black/40 backdrop-blur-sm shadow-2xl overflow-hidden" style={{ "--delay": "200ms" }}>
-        {/* Top Navbar inside content */}
         <div className="flex items-center justify-between border-b border-white/5 px-8 py-4 bg-white/[0.01]">
           <div className="flex items-center gap-4">
             <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-yellow-300">Kinetic Shell v.01</span>
@@ -121,59 +149,106 @@ function WorkSpace() {
           </div>
         </div>
 
-        {/* Editor Area */}
         <div className="flex-1 overflow-y-auto p-8 lg:p-12">
-          <div className="mx-auto max-w-3xl space-y-8">
-            <div className="space-y-4">
-              <h2 className="text-3xl font-black uppercase tracking-tight text-white sm:text-4xl">What are we building today?</h2>
-              <p className="text-sm leading-relaxed text-white/40">
-                Describe your interface, logic, or flow. Kinetic will break it down into atomic components 
-                and backend-ready schemas.
-              </p>
-            </div>
+          {!generatedCode ? (
+            <div className="mx-auto max-w-3xl space-y-8">
+              <div className="space-y-4">
+                <h2 className="text-3xl font-black uppercase tracking-tight text-white sm:text-4xl">What are we building today?</h2>
+                <p className="text-sm leading-relaxed text-white/40">
+                  Describe your interface, logic, or flow. Kinetic will break it down into atomic components 
+                  and backend-ready schemas.
+                </p>
+              </div>
 
-            <div className="relative group">
-              <div className="absolute -inset-0.5 rounded-[2rem] bg-gradient-to-r from-yellow-300/0 via-yellow-300/10 to-transparent opacity-0 blur-xl transition group-focus-within:opacity-100" />
-              <textarea
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                placeholder="E.g. A sleek, high-conversion landing page for a SaaS platform with pricing cards and a glassmorphism navbar..."
-                className="relative min-h-[300px] w-full rounded-[2rem] border border-white/10 bg-white/[0.03] p-8 text-lg leading-relaxed text-white placeholder:text-white/10 outline-none transition focus:border-yellow-300/40 focus:bg-white/[0.05]"
-              />
-              
-              <div className="absolute bottom-6 right-6 flex items-center gap-4">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-white/20 hidden sm:block">⌘ + Enter to generate</span>
+              <div className="relative group">
+                <div className="absolute -inset-0.5 rounded-[2rem] bg-gradient-to-r from-yellow-300/0 via-yellow-300/10 to-transparent opacity-0 blur-xl transition group-focus-within:opacity-100" />
+                <textarea
+                  value={prompt}
+                  onChange={(e) => setPrompt(e.target.value)}
+                  disabled={isLoading}
+                  placeholder="E.g. A sleek, high-conversion landing page for a SaaS platform with pricing cards and a glassmorphism navbar..."
+                  className="relative min-h-[300px] w-full rounded-[2rem] border border-white/10 bg-white/[0.03] p-8 text-lg leading-relaxed text-white placeholder:text-white/10 outline-none transition focus:border-yellow-300/40 focus:bg-white/[0.05] disabled:opacity-50"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                      handleGenerate();
+                    }
+                  }}
+                />
+                
+                <div className="absolute bottom-6 right-6 flex items-center gap-4">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-white/20 hidden sm:block">⌘ + Enter to generate</span>
+                  <button 
+                    disabled={isLoading || !prompt.trim()}
+                    className="flex h-12 w-12 items-center justify-center rounded-full bg-yellow-300 text-black shadow-lg shadow-yellow-300/20 transition hover:scale-105 hover:bg-yellow-200 active:scale-95 disabled:opacity-50 disabled:scale-100 disabled:hover:bg-yellow-300"
+                    onClick={handleGenerate}
+                  >
+                    {isLoading ? (
+                      <div className="h-5 w-5 animate-spin rounded-full border-2 border-black border-t-transparent" />
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M13 18l6-6-6-6"/></svg>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {!isLoading && (
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  {[
+                    "Create a multi-step signup form",
+                    "Design a dark-mode analytics dashboard",
+                    "Build a premium product gallery",
+                    "Schema for a real-time chat app"
+                  ].map((text) => (
+                    <button 
+                      key={text}
+                      onClick={() => setPrompt(text)}
+                      className="text-left rounded-2xl border border-white/5 bg-white/[0.02] p-4 text-[11px] font-bold uppercase tracking-wider text-white/30 transition hover:border-white/20 hover:bg-white/5 hover:text-white/70"
+                    >
+                      {text}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="mx-auto max-w-5xl h-full flex flex-col space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-xl font-black uppercase tracking-tight text-white mb-2">Generated Kinetic Module</h3>
+                  <div className="flex items-center gap-4">
+                    <span className="px-2 py-0.5 rounded-md bg-white/5 text-[9px] font-bold uppercase tracking-widest text-white/40">React v19</span>
+                    <span className="px-2 py-0.5 rounded-md bg-white/5 text-[9px] font-bold uppercase tracking-widest text-white/40">Tailwind CSS</span>
+                  </div>
+                </div>
                 <button 
-                  className="flex h-12 w-12 items-center justify-center rounded-full bg-yellow-300 text-black shadow-lg shadow-yellow-300/20 transition hover:scale-105 hover:bg-yellow-200 active:scale-95"
-                  onClick={() => alert("Generation started...")}
+                  onClick={() => setGeneratedCode("")}
+                  className="text-[10px] font-bold uppercase tracking-widest text-white/30 hover:text-yellow-300 transition"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M13 18l6-6-6-6"/></svg>
+                  Edit Prompt
                 </button>
               </div>
+              
+              <div className="relative flex-1 group">
+                <div className="absolute top-4 right-4 z-10">
+                  <button 
+                    onClick={() => navigator.clipboard.writeText(generatedCode)}
+                    className="flex bg-black/60 backdrop-blur-md items-center gap-2 rounded-lg border border-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-white/60 hover:text-white transition"
+                  >
+                    Copy
+                  </button>
+                </div>
+                <div className="h-full w-full rounded-[2rem] border border-white/10 bg-white/[0.03] overflow-hidden">
+                  <pre className="h-full p-8 overflow-auto text-sm leading-relaxed text-yellow-200/80 font-mono scrollbar-hide">
+                    <code>{generatedCode}</code>
+                  </pre>
+                </div>
+              </div>
             </div>
-
-            {/* Quick Suggestions */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {[
-                "Create a multi-step signup form",
-                "Design a dark-mode analytics dashboard",
-                "Build a premium product gallery",
-                "Schema for a real-time chat app"
-              ].map((text) => (
-                <button 
-                  key={text}
-                  onClick={() => setPrompt(text)}
-                  className="text-left rounded-2xl border border-white/5 bg-white/[0.02] p-4 text-[11px] font-bold uppercase tracking-wider text-white/30 transition hover:border-white/20 hover:bg-white/5 hover:text-white/70"
-                >
-                  {text}
-                </button>
-              ))}
-            </div>
-          </div>
+          )}
         </div>
       </main>
     </div>
   );
-}
+};
 
 export default WorkSpace;

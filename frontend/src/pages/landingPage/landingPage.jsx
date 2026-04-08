@@ -1,7 +1,7 @@
 import { Link } from "react-router";
-import { useState, useEffect } from "react";
 import img1 from "../../assets/image.png";
 import img2 from "../../assets/image2.png";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 const workflowSteps = [
   {
@@ -43,12 +43,7 @@ const faqs = [
 ];
 
 const LandingPage = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const user = localStorage.getItem("kinetic-user");
-    setIsLoggedIn(!!user);
-  }, []);
+  const { user } = useAuth();
 
   return (
     <>
@@ -95,10 +90,10 @@ const LandingPage = () => {
 
           <div className="kinetic-reveal flex flex-col gap-3 sm:flex-row" style={{ "--delay": "450ms" }}>
             <Link
-              to={isLoggedIn ? "/workspace" : "/login"}
+              to={user ? "/workspace" : "/login"}
               className="kinetic-button inline-flex items-center justify-center rounded-full bg-yellow-300 px-6 py-3.5 text-sm font-black uppercase tracking-[0.24em] text-black transition hover:bg-yellow-200"
             >
-              {isLoggedIn ? "Enter Workspace" : "Open Login"}
+              {user ? "Enter Workspace" : "Open Login"}
             </Link>
             <a
               href="#flow"

@@ -1,28 +1,15 @@
-import { Link, useNavigate, useLocation } from "react-router";
-import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router";
+import { useAuth } from "../../context/AuthContext.jsx";
 
-function Navbar() {
+const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [user, setUser] = useState(null);
+  const { logout, user } = useAuth();
 
-  // Use a focus effect/interval to catch localStorage changes across the app
-  useEffect(() => {
-    function checkUser() {
-      const saved = localStorage.getItem("kinetic-user");
-      setUser(saved ? JSON.parse(saved) : null);
-    }
-    
-    checkUser();
-    window.addEventListener('storage', checkUser);
-    return () => window.removeEventListener('storage', checkUser);
-  }, [location.pathname]); // Re-check on route change
-
-  function handleLogout() {
-    localStorage.removeItem("kinetic-user");
-    setUser(null);
+  const handleLogout = async () => {
+    await logout();
     navigate("/");
-  }
+  };
 
   return (
     <div
@@ -39,10 +26,10 @@ function Navbar() {
 
       <div className="flex items-center gap-4">
         <div className="hidden items-center gap-5 text-xs font-bold uppercase tracking-[0.18em] text-white/55 sm:flex sm:text-sm">
-          <a href="#about" className="transition hover:text-white">
+          <a href={location.pathname === "/" ? "#about" : "/#about"} className="transition hover:text-white">
             About
           </a>
-          <a href="#flow" className="transition hover:text-white">
+          <a href={location.pathname === "/" ? "#flow" : "/#flow"} className="transition hover:text-white">
             Flow
           </a>
           {user && (
@@ -75,6 +62,6 @@ function Navbar() {
       </div>
     </div>
   );
-}
+};
 
 export default Navbar;
