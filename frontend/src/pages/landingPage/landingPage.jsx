@@ -2,37 +2,38 @@ import { Link } from "react-router";
 import img1 from "../../assets/image.png";
 import img2 from "../../assets/image2.png";
 import { useAuth } from "../../context/useAuth.js";
+import { Card, Button, Grid, Badge } from "../../component/UI/index.js";
 
 const workflowSteps = [
   {
     id: "01",
     title: "Create an account",
-    description: "Register or log in with the backend fields.",
+    description: "Register or log in to access the full power of Kinetic.",
   },
   {
     id: "02",
     title: "Enter the workspace",
-    description: "Authenticated users enter the workspace shell.",
+    description: "Access the agent-first interface for building full-stack prototypes.",
   },
   {
     id: "03",
-    title: "Expand the build",
-    description: "Next comes generation routes and project output.",
+    title: "Generate & iterate",
+    description: "Use AI agents to generate code, manage files, and preview results in real-time.",
   },
 ];
 
 const productSignals = [
-  "Structured around real frontend and backend boundaries",
-  "Designed for iterative prototype building instead of one-shot output",
-  "Ready for auth, prompt workflows, and future generation routes",
+  "Agent-first interface for parallel AI operations",
+  "Multi-file project management with live preview",
+  "Cursor-inspired modern design and workflow",
 ];
 
 const motionSignals = [
-  "Auth-first flow",
-  "Backend-aware entry",
-  "Prompt workspace",
-  "Live route structure",
-  "Product motion system",
+  "Agent orchestration",
+  "Code generation",
+  "Live preview",
+  "Multi-file workspace",
+  "AI-powered builders",
 ];
 
 const LandingPage = () => {
@@ -40,63 +41,53 @@ const LandingPage = () => {
 
   return (
     <>
-      <main className="grid gap-10 lg:grid-cols-[1.35fr_0.65fr] lg:items-end xl:gap-16">
-        <section className="space-y-6 pt-2 sm:pt-4">
-          <div className="space-y-2">
-            <h1
-              className="kinetic-title-line text-5xl font-black uppercase leading-none tracking-[-0.06em] sm:text-7xl lg:text-[7.5rem] xl:text-[8rem]"
-              style={{ "--delay": "190ms" }}
-            >
-              Create
-            </h1>
-            <h1
-              className="kinetic-title-line text-5xl font-black uppercase leading-none tracking-[-0.06em] text-white/20 line-through sm:text-7xl lg:text-[7.5rem] xl:text-[8rem]"
-              style={{ "--delay": "260ms" }}
-            >
-              a prototype
-            </h1>
-            <h1
-              className="kinetic-title-line text-5xl font-black uppercase leading-none tracking-[-0.06em] text-white/20 line-through sm:text-7xl lg:text-[7.5rem] xl:text-[8rem]"
-              style={{ "--delay": "260ms" }}
-            >
-              that look
-            </h1>
-            <h1
-              className="kinetic-title-line text-5xl font-black uppercase leading-none tracking-[-0.06em] text-white/20 line-through sm:text-7xl lg:text-[7.5rem] xl:text-[8rem]"
-              style={{ "--delay": "260ms" }}
-            >
-              & feel like 
-            </h1>
-            <h1
-              className="kinetic-title-line text-5xl font-black uppercase leading-none tracking-[-0.06em] sm:text-7xl lg:text-[7.5rem] xl:text-[8rem]"
-              style={{ "--delay": "330ms" }}
-            >
-              real app
+      {/* Hero Section */}
+      <main className="min-h-screen flex flex-col justify-center items-center px-4 py-12 sm:py-20 relative overflow-hidden">
+        {/* Background Grid */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/10 via-transparent to-purple-500/10"></div>
+        </div>
+
+        <div className="relative z-10 max-w-4xl mx-auto text-center space-y-8">
+          {/* Badge */}
+          <div className="kinetic-reveal" style={{ "--delay": "100ms" }}>
+            <Badge variant="primary">Build Faster with AI</Badge>
+          </div>
+
+          {/* Hero Title */}
+          <div className="kinetic-reveal space-y-4" style={{ "--delay": "150ms" }}>
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black bg-gradient-to-r from-cyan-400 via-white to-purple-400 bg-clip-text text-transparent leading-tight">
+              The AI-Powered Prototype Builder
             </h1>
           </div>
 
-          <div className="kinetic-reveal max-w-3xl space-y-4 text-base text-white/75 sm:text-lg" style={{ "--delay": "390ms" }}>
-            <p>
-              Kinetic is an AI-assisted full stack prototype builder for turning rough ideas into usable product flows.
+          {/* Subtitle */}
+          <div className="kinetic-reveal max-w-2xl mx-auto" style={{ "--delay": "200ms" }}>
+            <p className="text-base sm:text-lg text-gray-300 leading-relaxed">
+              Kinetic is an agent-first platform for building full-stack prototypes with AI. Generate code, manage multi-file projects, and iterate in real-time with our Cursor-inspired interface.
             </p>
           </div>
 
-          <div className="kinetic-reveal flex flex-col gap-3 sm:flex-row" style={{ "--delay": "450ms" }}>
-            <Link
-              to={user ? "/workspace" : "/login"}
-              className="kinetic-button inline-flex items-center justify-center rounded-full bg-yellow-300 px-6 py-3.5 text-sm font-black uppercase tracking-[0.24em] text-black transition hover:bg-yellow-200"
+          {/* CTA Buttons */}
+          <div className="kinetic-reveal flex flex-col sm:flex-row gap-4 justify-center mt-8" style={{ "--delay": "250ms" }}>
+            <Button 
+              variant="primary" 
+              size="lg"
+              onClick={() => window.location.href = user ? "/workspace" : "/login"}
             >
-              {user ? "Enter Workspace" : "Open Login"}
-            </Link>
-            <a
-              href="#flow"
-              className="kinetic-button inline-flex items-center justify-center rounded-full border border-white/20 px-6 py-3.5 text-sm font-bold uppercase tracking-[0.2em] text-white/80 transition hover:border-white/40 hover:text-white"
+              {user ? "Enter Workspace" : "Get Started"}
+            </Button>
+            <Button 
+              variant="secondary" 
+              size="lg"
+              onClick={() => document.getElementById("features").scrollIntoView({ behavior: 'smooth' })}
             >
-              See Workflow
-            </a>
+              Learn More
+            </Button>
           </div>
 
-          <div className="kinetic-reveal kinetic-marquee" style={{ "--delay": "520ms" }}>
+          {/* Motion Signals */}
+          <div className="kinetic-reveal kinetic-marquee mt-12" style={{ "--delay": "300ms" }}>
             <div className="kinetic-marquee-track">
               {[...motionSignals, ...motionSignals].map((signal, index) => (
                 <span key={`${signal}-${index}`} className="kinetic-marquee-item">
@@ -106,96 +97,123 @@ const LandingPage = () => {
               ))}
             </div>
           </div>
-        </section>
+        </div>
       </main>
 
+      {/* Features Section */}
       <section
-        id="about"
-        className="kinetic-reveal bg-white flex-col text-black kinetic-divider grid gap-10 border-t rounded-4xl p-4 pb-4 border-white/10 pt-12 lg:grid-cols-[1fr_1.1fr] lg:pt-16 xl:gap-14"
-        style={{ "--delay": "520ms" }}
+        id="features"
+        className="kinetic-reveal py-20 sm:py-32 px-4 border-t border-cyan-500/10"
+        style={{ "--delay": "400ms" }}
       >
-        <div>
-          <p className="text-xl font-bold uppercase tracking-[0.28em] text-black">How Kinetic Works?</p>
-          <h2 className="mt-4 max-w-3xl text-4xl font-black uppercase tracking-[-0.05em] sm:text-5xl lg:text-[3.4rem]">
-            Kinetic moves from authentication into a workspace where product ideas can turn into usable flows.
-          </h2>
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12 sm:mb-20">
+            <Badge variant="purple" className="mb-6">Features</Badge>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-6">
+              Everything You Need to Build
+            </h2>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+              Kinetic provides all the tools to transform ideas into production-ready prototypes with AI assistance.
+            </p>
+          </div>
+
+          <Grid cols={3} gap={6}>
+            {[
+              {
+                title: "Agent Orchestration",
+                description: "Parallel AI operations for faster development and smarter code generation.",
+                icon: "🤖"
+              },
+              {
+                title: "Multi-File Management",
+                description: "Organize and manage complex projects with an intuitive file explorer.",
+                icon: "📁"
+              },
+              {
+                title: "Live Preview",
+                description: "See your changes in real-time with instant preview rendering.",
+                icon: "👁️"
+              },
+              {
+                title: "Code Generation",
+                description: "Generate production-quality code with AI-powered suggestions.",
+                icon: "⚡"
+              },
+              {
+                title: "Modern UI",
+                description: "Cursor-inspired interface designed for productivity and beauty.",
+                icon: "🎨"
+              },
+              {
+                title: "Full-Stack Support",
+                description: "Build complete applications with frontend and backend integration.",
+                icon: "🔗"
+              },
+            ].map((feature, idx) => (
+              <Card key={idx} className="h-full">
+                <div className="text-4xl mb-4">{feature.icon}</div>
+                <h3 className="text-xl font-bold text-cyan-400 mb-3">{feature.title}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{feature.description}</p>
+              </Card>
+            ))}
+          </Grid>
         </div>
       </section>
 
-      <section
-        className="flex flex-col pb-12 gap-10 border-t border-white/10 pt-12 bg-white w-screen ml-[-2.5vw] justify-center items-center rounded-4xl"
-        style={{ "--delay": "720ms" }}
-      >
-        <h1 className="text-6xl font-bold text-black hero-text">Wasting time making</h1>
-        <h1 className="text-6xl font-bold text-black hero-text">a modern process</h1>
-        <h1 className="text-6xl font-bold text-black hero-text">works?</h1>
-        <br />
-        <div className="p-4 bg-white w-full flex items-center justify-center">
-              <img src={img1} alt="" />
-        </div>
-
-        <h1 className="text-6xl font-bold text-black hero-text">Kinetic connects you</h1>
-        <h1 className="text-6xl font-bold text-black hero-text">directly with the</h1>
-        <h1 className="text-6xl font-bold text-black hero-text">medium?</h1>
-        <hr className="text-red" />
-
-        <div className="p-4 bg-white w-full flex items-center justify-center gap-[3vh]">
-          <div className="r">
-            <h1 className="text-6xl font-bold text-black hero-text">Your design is a</h1>
-            <h1 className="text-6xl font-bold text-black hero-text">living system</h1>
-            <h1 className="text-6xl font-bold text-black hero-text">of the components</h1>
-          </div>
-          <div className="i">
-            <img src={img2} alt="" />
-          </div>
-        </div>
-      </section>
-
+      {/* Workflow Section */}
       <section
         id="flow"
-        className="kinetic-reveal kinetic-divider grid gap-10 border-t border-white/10 pt-12 lg:grid-cols-[1.05fr_0.95fr] lg:pt-16 xl:grid-cols-[1.15fr_0.85fr]"
-        style={{ "--delay": "720ms" }}
+        className="kinetic-reveal py-20 sm:py-32 px-4 border-t border-cyan-500/10"
+        style={{ "--delay": "500ms" }}
       >
-        <article className="kinetic-panel">
-          <p className="text-xs font-bold uppercase tracking-[0.28em] text-yellow-200/80">How it flows</p>
-          <div className="mt-6 space-y-6 border-l border-white/10 pl-6 sm:pl-8">
-            {workflowSteps.map((step) => (
-              <div key={step.id} className="kinetic-card relative">
-                <span className="absolute -left-[2.55rem] top-1 sm:-left-[3.05rem]">
-                  <span className="kinetic-live-dot" />
-                </span>
-                <div className="flex items-start gap-4">
-                  <span className="kinetic-float-soft rounded-full bg-yellow-300 px-3 py-1 text-xs font-black tracking-[0.2em] text-black">
-                    {step.id}
-                  </span>
-                  <div>
-                    <h3 className="text-lg font-bold uppercase tracking-[0.16em] text-white">{step.title}</h3>
-                    <p className="mt-3 leading-7 text-white/70">{step.description}</p>
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Steps */}
+            <div>
+              <Badge variant="primary" className="mb-6">How It Works</Badge>
+              <h2 className="text-4xl sm:text-5xl font-black mb-12">Three Steps to Success</h2>
+              
+              <div className="space-y-8">
+                {workflowSteps.map((step, idx) => (
+                  <div key={step.id} className="flex gap-6">
+                    <div className="flex-shrink-0">
+                      <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-gradient-to-br from-cyan-500/30 to-purple-500/30 border border-cyan-500/50">
+                        <span className="text-cyan-400 font-bold text-lg">{step.id}</span>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white mb-2">{step.title}</h3>
+                      <p className="text-gray-400 leading-relaxed">{step.description}</p>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </article>
+            </div>
 
-        <article className="kinetic-panel flex flex-col justify-between gap-10">
-          <p className="text-xs font-bold uppercase tracking-[0.28em] text-white/45">Current status</p>
-          <h2 className="mt-4 max-w-3xl text-3xl font-black uppercase tracking-[-0.04em] text-white sm:text-4xl">
-            The frontend already matches the backend entry flow and leaves clear space for the generation layer.
-          </h2>
-          <p className="mt-4 max-w-3xl text-base leading-7 text-white/70">
-            This is not just a static landing page. It introduces the product, reflects the active backend auth
-            routes, and connects that entry flow to the workspace where future generation actions will live.
-          </p>
+            {/* Benefits */}
+            <div>
+              <Card className="h-full">
+                <Badge variant="purple" className="mb-6">Why Kinetic</Badge>
+                <h3 className="text-3xl font-bold text-white mb-8">Built for Modern Development</h3>
+                
+                <div className="space-y-6">
+                  {productSignals.map((signal) => (
+                    <div key={signal} className="flex gap-4">
+                      <div className="text-cyan-400 text-2xl mt-1">✓</div>
+                      <div>
+                        <p className="text-gray-300 leading-relaxed">{signal}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
 
-          <div className="grid gap-5 border-t border-white/10 pt-6 sm:grid-cols-3">
-            {productSignals.map((signal) => (
-              <p key={signal} className="text-sm leading-7 text-white/75">
-                {signal}
-              </p>
-            ))}
+                <Button variant="primary" size="lg" className="w-full mt-8">
+                  Start Building Now
+                </Button>
+              </Card>
+            </div>
           </div>
-        </article>
+        </div>
       </section>
     </>
   );

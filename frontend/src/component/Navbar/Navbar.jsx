@@ -12,55 +12,69 @@ const Navbar = () => {
   };
 
   return (
-    <div
-      className="kinetic-reveal flex w-full items-center justify-between gap-4 border-b border-white/10 pb-5"
+    <nav className="kinetic-reveal sticky top-0 z-50 w-full border-b border-cyan-500/10 bg-gradient-to-b from-gray-900/90 to-gray-900/70 backdrop-blur-xl"
       style={{ "--delay": "80ms" }}
     >
-      <Link to="/" className="kinetic-brand">
-        <span className="kinetic-brand-word">
-          <span className="text-xl font-black uppercase tracking-[0.22em] text-white sm:text-2xl sm:tracking-[0.25em]">
+      <div className="flex w-full items-center justify-between gap-6 px-4 py-4 sm:px-8 sm:py-5">
+        {/* Logo */}
+        <Link to="/" className="kinetic-brand flex items-center gap-2 hover:opacity-80 transition">
+          <div className="relative flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/30 to-purple-500/30 border border-cyan-500/50 shadow-lg shadow-cyan-500/20">
+            <span className="text-2xl font-black text-transparent bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text">K</span>
+          </div>
+          <span className="hidden sm:block text-xl font-black bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent">
             Kinetic
           </span>
-        </span>
-      </Link>
+        </Link>
 
-      <div className="flex items-center gap-4">
-        <div className="hidden items-center gap-5 text-xs font-bold uppercase tracking-[0.18em] text-white/55 sm:flex sm:text-sm">
-          <a href={location.pathname === "/" ? "#about" : "/#about"} className="transition hover:text-white">
+        {/* Navigation Links */}
+        <div className="hidden sm:flex items-center gap-8">
+          <a 
+            href={location.pathname === "/" ? "#about" : "/#about"} 
+            className="text-sm text-gray-400 font-medium hover:text-cyan-400 transition-colors duration-200"
+          >
             About
           </a>
-          <a href={location.pathname === "/" ? "#flow" : "/#flow"} className="transition hover:text-white">
-            Flow
+          <a 
+            href={location.pathname === "/" ? "#flow" : "/#flow"} 
+            className="text-sm text-gray-400 font-medium hover:text-cyan-400 transition-colors duration-200"
+          >
+            Workflow
           </a>
           {user && (
-            <Link to="/workspace" className="transition hover:text-white">
+            <Link 
+              to="/workspace" 
+              className="text-sm text-gray-400 font-medium hover:text-cyan-400 transition-colors duration-200"
+            >
               Workspace
             </Link>
           )}
         </div>
 
-        {user ? (
-          <div className="flex items-center gap-4">
-            <span className="hidden text-[10px] font-bold uppercase tracking-widest text-yellow-200/50 sm:block">
-              {user.username}
-            </span>
-            <button
-              onClick={handleLogout}
-              className="kinetic-button rounded-full border border-white/15 px-4 py-2.5 text-xs font-bold uppercase tracking-[0.16em] text-white hover:border-white/40 transition sm:px-5 sm:py-3 sm:text-sm"
+        {/* Auth Controls */}
+        <div className="flex items-center gap-3 sm:gap-4">
+          {user ? (
+            <>
+              <span className="hidden sm:block text-xs text-cyan-400/70 font-medium px-3 py-1 rounded-lg bg-cyan-500/10">
+                {user.username}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="kinetic-button px-4 py-2 sm:px-6 sm:py-2.5 text-xs sm:text-sm font-semibold rounded-lg border border-cyan-500/40 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-500/70 transition-all duration-200"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/login"
+              className="kinetic-button px-4 py-2 sm:px-6 sm:py-2.5 text-xs sm:text-sm font-semibold rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-gray-900 hover:from-cyan-400 hover:to-blue-400 shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 transition-all duration-200"
             >
-              Logout
-            </button>
-          </div>
-        ) : (
-          <Link
-            to="/login"
-            className="kinetic-button rounded-full bg-yellow-300 px-4 py-2.5 text-xs font-bold uppercase tracking-[0.16em] text-black transition hover:bg-yellow-200 sm:px-5 sm:py-3 sm:text-sm sm:tracking-[0.2em]"
-          >
-            Open Login
-          </Link>
-        )}
+              Login
+            </Link>
+          )}
+        </div>
       </div>
-    </div>
+    </nav>
   );
 };
 
