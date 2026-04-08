@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../../context/useAuth.js";
+import { Button } from "../../component/UI/index.js";
 
 const emptyForm = {
   email: "",
@@ -35,13 +36,13 @@ const LoginPage = () => {
       setForm(emptyForm);
       setStatus({
         type: "success",
-        message: "Session authenticated. Redirecting...",
+        message: "Session authenticated. Re-establishing link...",
       });
       setTimeout(() => navigate("/workspace"), 800);
     } catch (error) {
       setStatus({
         type: "error",
-        message: error.message || "Authentication failed. Check credentials.",
+        message: error.message || "Credential verification failed.",
       });
     } finally {
       setIsSubmitting(false);
@@ -49,98 +50,101 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex min-h-[80vh] items-center justify-center py-12 px-6">
-      <section className="reveal monolith-card w-full max-w-md p-10 bg-[var(--surface-container)] border border-[var(--outline-variant)] shadow-2xl">
-        <div className="mb-12 space-y-4">
-           <div className="flex items-center justify-between">
-              <p className="text-[9px] font-black uppercase tracking-[0.4em] text-[var(--on-surface-variant)] opacity-40">Security_Protocol</p>
-              <div className="h-1.5 w-1.5 rounded-full bg-[var(--primary)] shadow-[0_0_8px_var(--primary)] animate-pulse" />
-           </div>
-           
-           <div className="flex gap-1.5">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <div key={i} className="h-1 flex-1 bg-[var(--surface-submerged)] rounded-full overflow-hidden">
-                  <div 
-                    className={`h-full bg-[var(--primary)] transition-all duration-1000 ${i <= 3 ? 'w-full' : 'w-0'}`}
-                    style={{ transitionDelay: `${i * 150}ms` }}
-                  />
-                </div>
-              ))}
-           </div>
-        </div>
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 relative overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+      </div>
 
-        <div className="flex items-center gap-8 border-b border-[var(--outline-variant)] mb-10 pb-1">
-          <button
-            type="button"
-            className="text-[10px] font-black uppercase tracking-[0.3em] pb-4 border-b-2 border-[var(--primary)] text-[var(--on-surface)]"
-          >
-            Authorize
-          </button>
-          <Link
-            to="/signup"
-            className="text-[10px] font-black uppercase tracking-[0.3em] pb-4 text-[var(--on-surface-variant)] opacity-40 hover:opacity-100 transition-opacity"
-          >
-            Register
+      {/* Content */}
+      <div className="relative z-10 w-full max-w-md">
+        <div className="kinetic-reveal mb-8" style={{ "--delay": "100ms" }}>
+          <Link to="/" className="inline-flex items-center gap-2 hover:opacity-80 transition mb-8">
+            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/30 to-purple-500/30 border border-cyan-500/50">
+              <span className="text-2xl font-black text-transparent bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text">K</span>
+            </div>
+            <span className="text-xl font-black bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent uppercase tracking-widest">
+              Kinetic
+            </span>
           </Link>
         </div>
 
-        <div className="space-y-3">
-          <h2 className="text-4xl font-bold tracking-tight text-[var(--on-surface)]">
-            Welcome_ <br /><span className="text-[var(--primary)]">Back</span>
-          </h2>
-          <p className="text-xs text-[var(--on-surface-variant)] opacity-60">
-            Verify identity to re-establish neural link.
+        {/* Form Card */}
+        <div className="kinetic-reveal p-10 bg-[#0a0e27]/40 backdrop-blur-2xl rounded-2xl border border-cyan-500/20" style={{ "--delay": "150ms" }}>
+          {/* Tab Navigation */}
+          <div className="flex gap-8 border-b border-cyan-500/10 pb-6 mb-10">
+            <button type="button" className="text-[10px] font-black uppercase tracking-[0.3em] text-cyan-400 border-b-2 border-cyan-400 pb-6 -mb-6 transition">
+              Authorize
+            </button>
+            <Link to="/signup" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-gray-300 transition">
+              Construct Identity
+            </Link>
+          </div>
+
+          {/* Form Header */}
+          <div className="mb-10 space-y-2">
+            <h1 className="text-4xl font-black text-white tracking-tight uppercase leading-none">Welcome_ <br /><span className="text-cyan-400">Back</span></h1>
+            <p className="text-xs text-gray-500 uppercase tracking-widest font-mono">Quantum_Auth_v2.0</p>
+          </div>
+
+          {/* Form */}
+          <form className="space-y-8" onSubmit={handleSubmit}>
+            <div className="space-y-2">
+               <p className="text-[9px] font-black uppercase tracking-[0.4em] text-gray-600">User_Identity</p>
+               <input 
+                 type="email"
+                 name="email"
+                 value={form.email}
+                 onChange={updateField}
+                 required
+                 placeholder="name@example.com"
+                 className="input-field w-full"
+               />
+            </div>
+
+            <div className="space-y-2">
+               <p className="text-[9px] font-black uppercase tracking-[0.4em] text-gray-600">Security_Key</p>
+               <input 
+                 type="password"
+                 name="password"
+                 value={form.password}
+                 onChange={updateField}
+                 required
+                 placeholder="••••••••"
+                 className="input-field w-full"
+               />
+            </div>
+
+            {status.message && (
+              <div className={`p-4 rounded-lg text-[10px] font-bold uppercase tracking-widest ${
+                status.type === "error" 
+                  ? "bg-red-500/10 border border-red-500/30 text-red-400" 
+                  : "bg-cyan-500/10 border border-cyan-500/30 text-cyan-400"
+              }`}>
+                {status.message}
+              </div>
+            )}
+
+            <Button 
+              variant="primary" 
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full py-4 text-[10px] font-black uppercase tracking-[0.3em] shadow-[0_0_20px_rgba(0,217,255,0.2)]"
+            >
+              {isSubmitting ? "Verifying..." : "Initialize Session"}
+            </Button>
+          </form>
+
+          {/* Footer */}
+          <p className="text-[9px] font-bold text-gray-600 text-center mt-10 uppercase tracking-[0.3em]">
+            New to Kinetic? {' '}
+            <Link to="/signup" className="text-cyan-400 hover:text-cyan-300 transition">
+              Register_ID
+            </Link>
           </p>
         </div>
-
-        <form className="mt-12 space-y-8" onSubmit={handleSubmit}>
-          <div className="space-y-2">
-            <span className="text-[9px] font-black uppercase tracking-[0.3em] text-[var(--on-surface-variant)] opacity-40">User_Identity</span>
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={updateField}
-              required
-              className="input-field w-full"
-              placeholder="name@example.com"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <span className="text-[9px] font-black uppercase tracking-[0.3em] text-[var(--on-surface-variant)] opacity-40">Security_Key</span>
-            <input
-              type="password"
-              name="password"
-              value={form.password}
-              onChange={updateField}
-              required
-              className="input-field w-full"
-              placeholder="••••••••"
-            />
-          </div>
-
-          {status.message && (
-            <div className={`p-4 rounded text-[10px] font-bold uppercase tracking-widest ${
-              status.type === "error" ? "bg-red-500/10 text-red-400 border border-red-500/20" : "bg-[var(--primary)]/10 text-[var(--primary)] border border-[var(--primary)]/20"
-            }`}>
-              {status.message}
-            </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="btn-primary w-full py-4 uppercase tracking-[0.3em] text-xs font-black shadow-[0_0_20px_rgba(50,145,255,0.2)]"
-          >
-            {isSubmitting ? "Authenticating..." : "Initialize Session"}
-          </button>
-        </form>
-
-        <p className="mt-12 text-center text-[8px] font-black uppercase tracking-[0.4em] text-[var(--on-surface-variant)] opacity-20">
-          Neural_Vault_v1.0.4 // Kinetic_OS
-        </p>
-      </section>
+      </div>
     </div>
   );
 };

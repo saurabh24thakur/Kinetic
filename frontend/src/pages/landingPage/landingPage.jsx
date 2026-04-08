@@ -1,7 +1,6 @@
 import { Link } from "react-router";
-import img1 from "../../assets/image.png";
-import img2 from "../../assets/image2.png";
 import { useAuth } from "../../context/useAuth.js";
+import { Card, Button, Grid, Badge } from "../../component/UI/index.js";
 
 const workflowSteps = [
   {
@@ -12,27 +11,27 @@ const workflowSteps = [
   {
     id: "02",
     title: "Neural Synthesis",
-    description: "Interface with the generation engine to construct complex flows.",
+    description: "Interface with the generation engine to construct complex monoliths.",
   },
   {
     id: "03",
     title: "Deployment",
-    description: "Export high-fidelity monoliths ready for deployment.",
+    description: "Export high-fidelity architectures ready for production deployment.",
   },
 ];
 
 const productSignals = [
-  "Bespoke Monolithic Architecture",
-  "Neural-assisted Synthesis",
-  "High-Precision Output",
+  "Agent-first interface for parallel AI operations",
+  "Multi-file project management with live preview",
+  "Neural-assisted Synthesis for high-precision code",
 ];
 
 const motionSignals = [
-  "Neural Synthesis",
-  "Obsidian Interface",
-  "Digital Monolith",
-  "Zen Evolution",
-  "Electric Precision",
+  "Agent orchestration",
+  "Code generation",
+  "Live preview",
+  "Multi-file workspace",
+  "AI-powered builders",
 ];
 
 const LandingPage = () => {
@@ -41,82 +40,74 @@ const LandingPage = () => {
   return (
     <div className="space-y-32 pb-32">
       {/* Hero Section */}
-      <main className="reveal grid gap-16 pt-12 lg:grid-cols-[1.3fr_0.7fr] lg:items-center">
-        <section className="space-y-10">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--surface-container-high)] border border-[var(--outline-variant)]">
-              <div className="h-1.5 w-1.5 rounded-full bg-[var(--primary)] shadow-[0_0_8px_var(--primary)]" />
-              <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--on-surface-variant)] leading-none">Version 2.0_Obsidian</span>
-            </div>
-            <h1 className="text-6xl font-bold tracking-tight text-[var(--on-surface)] sm:text-8xl xl:text-9xl leading-[0.9]">
-              Neural_ <br />
-              <span className="text-[var(--primary)]">Architecture</span>
+      <main className="min-h-screen flex flex-col justify-center items-center px-4 py-12 relative overflow-hidden">
+        <div className="relative z-10 max-w-4xl mx-auto text-center space-y-12">
+          {/* Badge */}
+          <div className="kinetic-reveal" style={{ "--delay": "100ms" }}>
+            <Badge variant="primary">VERSION 2.0_OBSIDIAN</Badge>
+          </div>
+
+          {/* Hero Title */}
+          <div className="kinetic-reveal space-y-4" style={{ "--delay": "150ms" }}>
+            <h1 className="text-6xl sm:text-7xl lg:text-9xl font-black bg-gradient-to-r from-cyan-400 via-white to-purple-400 bg-clip-text text-transparent leading-[0.9] tracking-tighter">
+              Neural_ <br />Architecture
             </h1>
           </div>
 
-          <div className="max-w-xl space-y-8">
-            <p className="text-lg leading-relaxed text-[var(--on-surface-variant)] opacity-70">
+          {/* Subtitle */}
+          <div className="kinetic-reveal max-w-2xl mx-auto" style={{ "--delay": "200ms" }}>
+            <p className="text-lg sm:text-xl text-gray-400 leading-relaxed font-medium">
               Kinetic is a high-performance instrument for turning conceptual logic into 
               sophisticated digital monoliths. Precision by design.
             </p>
-
-            <div className="flex flex-col gap-4 sm:flex-row">
-              <Link
-                to={user ? "/workspace" : "/login"}
-                className="btn-primary px-10 py-4 text-xs font-bold uppercase tracking-[0.2em]"
-              >
-                {user ? "Enter Neural Shell" : "Initialize Access"}
-              </Link>
-              <a
-                href="#flow"
-                className="btn-ghost px-10 py-4 text-xs font-bold uppercase tracking-[0.2em]"
-              >
-                System Workflow
-              </a>
-            </div>
           </div>
 
-          <div className="pt-12 border-t border-[var(--outline-variant)]">
-            <div className="flex flex-wrap gap-x-12 gap-y-6">
-              {motionSignals.map((signal) => (
-                <div key={signal} className="flex items-center gap-3">
-                  <div className="h-1 w-1 rounded-full bg-[var(--primary)] opacity-40" />
-                  <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--on-surface-variant)] opacity-50">{signal}</span>
-                </div>
+          {/* CTA Buttons */}
+          <div className="kinetic-reveal flex flex-col sm:flex-row gap-6 justify-center mt-8" style={{ "--delay": "250ms" }}>
+            <Button 
+              variant="primary" 
+              size="lg"
+              onClick={() => window.location.href = user ? "/workspace" : "/login"}
+              className="px-12 py-4 text-xs font-black uppercase tracking-widest"
+            >
+              {user ? "Enter Neural Shell" : "Initialize Access"}
+            </Button>
+            <Button 
+              variant="secondary" 
+              size="lg"
+              onClick={() => document.getElementById("flow").scrollIntoView({ behavior: 'smooth' })}
+              className="px-12 py-4 text-xs font-black uppercase tracking-widest"
+            >
+              System Workflow
+            </Button>
+          </div>
+
+          {/* Motion Signals Header - Marquee Style */}
+          <div className="kinetic-reveal kinetic-marquee mt-24 opacity-40 hover:opacity-100 transition-opacity" style={{ "--delay": "300ms" }}>
+            <div className="kinetic-marquee-track">
+              {[...motionSignals, ...motionSignals].map((signal, index) => (
+                <span key={`${signal}-${index}`} className="kinetic-marquee-item">
+                  <span className="kinetic-live-dot" />
+                  {signal}
+                </span>
               ))}
             </div>
           </div>
-        </section>
-
-        <section className="hidden lg:block">
-          <div className="aspect-square rounded-2xl bg-gradient-to-br from-[var(--surface-container-high)] to-transparent border border-[var(--outline-variant)] relative overflow-hidden">
-             <div className="absolute inset-0 bg-[var(--primary)] opacity-[0.03] blur-[100px]" />
-             <div className="p-12 h-full flex flex-col justify-between">
-                <div className="space-y-4">
-                  <div className="h-px w-12 bg-[var(--primary)]" />
-                  <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--on-surface-variant)]">StructuralIntegrity</p>
-                </div>
-                <div className="space-y-2 opacity-20">
-                   {[1,2,3,4,5,6].map(i => (
-                     <div key={i} className="h-2 bg-[var(--on-surface)] rounded-full" style={{ width: `${100 - (i*10)}%` }} />
-                   ))}
-                </div>
-             </div>
-          </div>
-        </section>
+        </div>
       </main>
 
-      {/* About Section */}
+      {/* About Section (The Instrument) */}
       <section
         id="about"
-        className="reveal monolith-card p-12 lg:p-24 space-y-12 bg-[var(--surface-container)] border border-[var(--outline-variant)]"
+        className="kinetic-reveal p-12 lg:p-24 space-y-12 bg-white/5 border border-white/5 rounded-3xl backdrop-blur-3xl"
+        style={{ "--delay": "350ms" }}
       >
         <div className="max-w-4xl space-y-8">
-          <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--primary)]">The Instrument</p>
-          <h2 className="text-4xl font-bold tracking-tight text-[var(--on-surface)] sm:text-6xl leading-[1.1]">
-            We abandon the template. Kinetic treats the UI as a <span className="text-[var(--on-surface-variant)] opacity-40">Zen-state environment.</span>
+          <p className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-400">The Instrument</p>
+          <h2 className="text-4xl font-black tracking-tight text-white sm:text-6xl leading-[1.1] uppercase">
+            We abandon the template. Kinetic treats the UI as a <span className="text-gray-500 italic">Zen-state environment.</span>
           </h2>
-          <p className="text-lg leading-relaxed text-[var(--on-surface-variant)] opacity-70 max-w-2xl">
+          <p className="text-lg leading-relaxed text-gray-400 font-medium max-w-2xl">
             Our design system—Digital Obsidian—prioritizes restraint. We move away from the cluttered density 
             of traditional editors toward Focused Intentionality.
           </p>
@@ -126,45 +117,56 @@ const LandingPage = () => {
       {/* Workflow Section */}
       <section
         id="flow"
-        className="reveal grid gap-16 lg:grid-cols-[1.1fr_0.9fr]"
+        className="kinetic-reveal py-32 px-4 border-t border-white/5"
+        style={{ "--delay": "400ms" }}
       >
-        <article className="space-y-12">
-          <div className="space-y-4">
-            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--on-surface-variant)] opacity-40">Synthesis_Flow</p>
-            <h3 className="text-3xl font-bold text-[var(--on-surface)] tracking-tight">The Neural Pipeline</h3>
-          </div>
-          
-          <div className="space-y-6">
-            {workflowSteps.map((step) => (
-              <div key={step.id} className="group flex gap-8 p-8 rounded-xl bg-[var(--surface-container-low)] border border-transparent hover:border-[var(--outline-variant)] transition-all">
-                <span className="text-2xl font-black text-[var(--primary)] opacity-20 group-hover:opacity-100 transition-opacity leading-none pt-1">
-                  {step.id}
-                </span>
-                <div className="space-y-2">
-                  <h4 className="text-lg font-bold text-[var(--on-surface)] uppercase tracking-wider">{step.title}</h4>
-                  <p className="text-sm leading-relaxed text-[var(--on-surface-variant)] opacity-60">{step.description}</p>
-                </div>
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-24 items-center">
+            {/* Steps */}
+            <div className="space-y-12">
+              <div className="space-y-4">
+                <Badge variant="primary">HOW IT WORKS</Badge>
+                <h2 className="text-5xl font-black text-white uppercase tracking-tighter">The Neural Pipeline</h2>
               </div>
-            ))}
-          </div>
-        </article>
-
-        <article className="monolith-card p-12 bg-gradient-to-b from-[var(--surface-container-high)] to-[var(--surface-container)] border border-[var(--outline-variant)] flex flex-col justify-center">
-           <div className="space-y-12">
-              <div className="h-2 w-12 bg-[var(--primary)] shadow-[0_0_12px_var(--primary)]" />
-              <h4 className="text-4xl font-bold tracking-tight leading-[1.2]">
-                A living system of components, <span className="text-[var(--on-surface-variant)] opacity-40 italic">not just pixels.</span>
-              </h4>
-              <div className="grid gap-6">
-                {productSignals.map((signal) => (
-                  <div key={signal} className="flex items-center gap-4 text-sm font-bold uppercase tracking-widest text-[var(--on-surface-variant)] opacity-60">
-                    <div className="h-[1px] w-4 bg-[var(--outline)]" />
-                    {signal}
+              
+              <div className="space-y-6">
+                {workflowSteps.map((step) => (
+                  <div key={step.id} className="group flex gap-8 p-10 rounded-2xl bg-white/5 border border-transparent hover:border-cyan-500/20 transition-all">
+                    <span className="text-3xl font-black text-cyan-400 opacity-20 group-hover:opacity-100 transition-opacity leading-none pt-1">
+                      {step.id}
+                    </span>
+                    <div className="space-y-3">
+                      <h4 className="text-xl font-bold text-white uppercase tracking-wider">{step.title}</h4>
+                      <p className="text-sm leading-relaxed text-gray-500 font-medium">{step.description}</p>
+                    </div>
                   </div>
                 ))}
               </div>
-           </div>
-        </article>
+            </div>
+
+            {/* Benefits Card */}
+            <div className="relative">
+               <div className="absolute -inset-4 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 blur-3xl rounded-full opacity-50" />
+               <Card className="relative h-full p-12 bg-black/40 backdrop-blur-3xl border border-white/10">
+                  <Badge variant="purple" className="mb-8">WHY KINETIC</Badge>
+                  <h3 className="text-3xl font-black text-white mb-10 uppercase tracking-tight leading-snug">Built for Modern <br />Development</h3>
+                  
+                  <div className="space-y-8">
+                    {productSignals.map((signal) => (
+                      <div key={signal} className="flex gap-4">
+                        <div className="text-cyan-400 text-2xl font-black mt-1">✓</div>
+                        <p className="text-gray-400 font-medium leading-relaxed">{signal}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <Button variant="primary" size="lg" className="w-full mt-12 py-4 text-[10px] font-black uppercase tracking-widest">
+                    Start Building Now
+                  </Button>
+               </Card>
+            </div>
+          </div>
+        </div>
       </section>
     </div>
   );
