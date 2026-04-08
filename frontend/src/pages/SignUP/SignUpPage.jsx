@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../../context/useAuth.js";
+import { Button, Input } from "../../component/UI/index.js";
 
 const emptyForm = {
   username: "",
@@ -51,123 +52,120 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="flex min-h-[70vh] items-center justify-center py-10">
-      <section
-        className="kinetic-reveal kinetic-panel w-full max-w-[28rem] rounded-[2.5rem] border border-white/10 bg-white/[0.02] p-8 backdrop-blur-xl sm:p-12"
-        style={{ "--delay": "260ms" }}
-      >
-        <div className="kinetic-reveal mb-10 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-5" style={{ "--delay": "300ms" }}>
-          <div className="flex items-center justify-between gap-4">
-            <p className="text-[10px] font-bold uppercase tracking-[0.26em] text-white/45">Protocol status</p>
-            <span className="kinetic-live-dot" />
-          </div>
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 relative overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl opacity-20"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl opacity-20"></div>
+      </div>
 
-          <div className="mt-6 flex justify-between gap-2">
-            {[1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className="h-1 w-full rounded-full bg-white/5 overflow-hidden"
-              >
-                <div 
-                  className={`h-full bg-yellow-300 transition-all duration-700 ${i <= 1 ? 'w-full' : 'w-0'}`}
-                  style={{ transitionDelay: `${i * 100}ms` }}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex items-center gap-8 border-b border-white/10 pb-5">
-           <Link
-            to="/login"
-            className="kinetic-button text-[11px] font-bold uppercase tracking-[0.26em] transition text-white/40 hover:text-white/70"
-          >
-            Login
+      {/* Content */}
+      <div className="relative z-10 w-full max-w-md">
+        <div 
+          className="kinetic-reveal mb-8"
+          style={{ "--delay": "100ms" }}
+        >
+          <Link to="/" className="inline-flex items-center gap-2 hover:opacity-80 transition mb-8">
+            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/30 to-purple-500/30 border border-cyan-500/50">
+              <span className="text-2xl font-black text-transparent bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text">K</span>
+            </div>
+            <span className="text-xl font-black bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent">
+              Kinetic
+            </span>
           </Link>
-          <button
-            type="button"
-            className="kinetic-button text-[11px] font-bold uppercase tracking-[0.26em] transition text-yellow-200"
-          >
-            Register
-          </button>
         </div>
 
-        <div className="mt-8 space-y-3">
-          <h2 className="text-3xl font-black uppercase tracking-[-0.05em] sm:text-4xl">
-            Create access
-          </h2>
-          <p className="text-xs leading-6 text-white/50">
-            Enter your details to create a secure workspace session.
-          </p>
-        </div>
+        {/* Form Card */}
+        <div 
+          className="kinetic-reveal kinetic-panel rounded-2xl p-8"
+          style={{ "--delay": "150ms" }}
+        >
+          {/* Tab Navigation */}
+          <div className="flex gap-4 border-b border-cyan-500/20 pb-6 mb-8">
+            <Link
+              to="/login"
+              className="text-sm font-semibold text-gray-500 hover:text-gray-400 pb-2 transition"
+            >
+              Login
+            </Link>
+            <button
+              type="button"
+              className="text-sm font-semibold text-cyan-400 border-b-2 border-cyan-400 pb-2 transition"
+            >
+              Create Account
+            </button>
+          </div>
 
-        <form className="mt-10 space-y-6" onSubmit={handleSubmit}>
-          <label className="block">
-            <span className="block text-[10px] font-bold uppercase tracking-[0.22em] text-white/40">Username</span>
-            <input
+          {/* Form Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-white mb-2">Create Your Account</h1>
+            <p className="text-gray-400">Join Kinetic and start building</p>
+          </div>
+
+          {/* Form */}
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            <Input 
+              label="Username"
               type="text"
               name="username"
               value={form.username}
               onChange={updateField}
               required
-              className="kinetic-input mt-3 w-full border-b border-white/10 bg-transparent pb-3 text-sm text-white outline-none transition placeholder:text-white/20 focus:border-yellow-300/50"
-              placeholder="your-name"
+              placeholder="your-username"
             />
-          </label>
 
-          <label className="block">
-            <span className="block text-[10px] font-bold uppercase tracking-[0.22em] text-white/40">Email</span>
-            <input
+            <Input 
+              label="Email Address"
               type="email"
               name="email"
               value={form.email}
               onChange={updateField}
               required
-              className="kinetic-input mt-3 w-full border-b border-white/10 bg-transparent pb-3 text-sm text-white outline-none transition placeholder:text-white/20 focus:border-yellow-300/50"
-              placeholder="name@example.com"
+              placeholder="you@example.com"
             />
-          </label>
 
-          <label className="block">
-            <span className="block text-[10px] font-bold uppercase tracking-[0.22em] text-white/40">Password</span>
-            <input
+            <Input 
+              label="Password"
               type="password"
               name="password"
               value={form.password}
               onChange={updateField}
               required
-              className="kinetic-input mt-3 w-full border-b border-white/10 bg-transparent pb-3 text-sm text-white outline-none transition placeholder:text-white/20 focus:border-yellow-300/50"
               placeholder="••••••••"
             />
-          </label>
 
-          {status.message ? (
-            <div
-              className={`border-l-2 px-4 py-2 text-xs leading-5 transition-all ${
-                status.type === "error" ? "border-red-400/50 bg-red-400/5 text-red-200" : "border-emerald-400/50 bg-emerald-400/5 text-emerald-200"
-              }`}
-            >
-              {status.message}
-            </div>
-          ) : null}
+            {/* Status Messages */}
+            {status.message && (
+              <div className={`p-4 rounded-lg text-sm ${
+                status.type === "error" 
+                  ? "bg-red-500/10 border border-red-500/30 text-red-300" 
+                  : "bg-green-500/10 border border-green-500/30 text-green-300"
+              }`}>
+                {status.message}
+              </div>
+            )}
 
-          <div className="pt-4">
-            <button
+            {/* Submit Button */}
+            <Button 
+              variant="primary" 
+              size="lg"
               type="submit"
               disabled={isSubmitting}
-              className="kinetic-button group relative flex w-full items-center justify-center overflow-hidden rounded-full bg-yellow-300 py-4 text-[11px] font-black uppercase tracking-[0.24em] text-black transition hover:bg-yellow-200 disabled:opacity-50"
+              className="w-full"
             >
-              <span className="relative z-10 transition-transform group-hover:scale-105">
-                {isSubmitting ? "Processing..." : "Create And Enter"}
-              </span>
-            </button>
-          </div>
-        </form>
+              {isSubmitting ? "Creating Account..." : "Create Account"}
+            </Button>
+          </form>
 
-        <p className="mt-8 text-center text-[10px] font-bold uppercase tracking-[0.2em] text-white/20">
-          Kinetic Auth Protocol v1.0.4
-        </p>
-      </section>
+          {/* Footer */}
+          <p className="text-xs text-gray-500 text-center mt-6">
+            Already have an account? {' '}
+            <Link to="/login" className="text-cyan-400 hover:text-cyan-300 transition">
+              Sign in
+            </Link>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
