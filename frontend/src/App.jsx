@@ -1,29 +1,26 @@
-import "./App.css";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router";
-import Layout from "./component/Layout/Layout.jsx";
-import LandingPage from "./pages/landingPage/landingPage.jsx";
-import LoginPage from "./pages/login/LoginPage.jsx";
-import SignUpPage from "./pages/SignUP/SignUpPage.jsx";
-import WorkSpace from "./pages/workspace/WorkSpace.jsx";
-import Dashboard from "./pages/dashboard/Dashboard.jsx";
-import { AuthProvider } from "./context/AuthContext.jsx";
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import LandingPage from './pages/LandingPage';
+import Dashboard from './pages/Dashboard';
+import Workspace from './pages/Workspace';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route element={<Layout />}>
+    <Router>
+      <div className="min-h-screen bg-black text-white flex flex-col">
+        <Navbar />
+        <main className="flex-1">
+          <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/workspace" element={<WorkSpace />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/workspace" element={<Workspace />} />
             <Route path="*" element={<Navigate to="/" replace />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
