@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../../context/useAuth.js";
 
 const emptyForm = {
   username: "",
@@ -97,7 +97,7 @@ const SignUpPage = () => {
             Create access
           </h2>
           <p className="text-xs leading-6 text-white/50">
-            Enter your details to generate a mock session.
+            Enter your details to create a secure workspace session.
           </p>
         </div>
 

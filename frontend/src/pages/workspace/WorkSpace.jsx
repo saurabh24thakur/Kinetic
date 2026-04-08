@@ -1,35 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../../context/useAuth.js";
 import { generateCode } from "../../lib/api.js";
-
-const workspaceHighlights = [
-  {
-    title: "Idea intake",
-    description: "Capture the raw concept before it gets over-edited into something generic.",
-  },
-  {
-    title: "Flow shaping",
-    description: "Turn that concept into screens, states, and a backend-aware interaction model.",
-  },
-  {
-    title: "Delivery path",
-    description: "Extend the workspace into generated code, specs, and implementation tasks as routes are added.",
-  },
-];
-
-const workspaceMotionSignals = [
-  "Session active",
-  "Prompt drafting",
-  "Flow shaping",
-  "Generation next",
-  "Workspace unlocked",
-];
 
 const WorkSpace = () => {
   const [prompt, setPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [generatedCode, setGeneratedCode] = useState("");
+  const [generationError, setGenerationError] = useState("");
   const [history, setHistory] = useState([
     { id: 1, title: "Modern Dashboard", date: "2m ago" },
     { id: 2, title: "Auth Flow Refactor", date: "1h ago" },
@@ -42,6 +20,7 @@ const WorkSpace = () => {
     
     setIsLoading(true);
     setGeneratedCode("");
+    setGenerationError("");
     
     try {
       const response = await generateCode({ prompt });
@@ -54,12 +33,15 @@ const WorkSpace = () => {
           title: prompt.slice(0, 20) + (prompt.length > 20 ? "..." : ""),
           date: "Just now"
         };
-        setHistory([newHistoryItem, ...history]);
+        setHistory((currentHistory) => [newHistoryItem, ...currentHistory]);
       } else {
-        alert("Generation failed: " + response.message);
+        setGenerationError(response.message || "Generation failed.");
       }
     } catch (error) {
-      alert(error.message || "Failed to reach generation engine.");
+      const quotaMessage = error.status === 429
+        ? `${error.message} ${error.details?.error || ""}`.trim()
+        : error.message || "Failed to reach generation engine.";
+      setGenerationError(quotaMessage);
     } finally {
       setIsLoading(false);
     }
@@ -190,6 +172,12 @@ const WorkSpace = () => {
                   </button>
                 </div>
               </div>
+
+              {generationError ? (
+                <div className="rounded-2xl border border-amber-300/20 bg-amber-300/5 px-5 py-4 text-sm leading-6 text-amber-100">
+                  {generationError}
+                </div>
+              ) : null}
 
               {!isLoading && (
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

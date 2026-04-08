@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import img1 from "../../assets/image.png";
 import img2 from "../../assets/image2.png";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../../context/useAuth.js";
 
 const workflowSteps = [
   {
@@ -33,13 +33,6 @@ const motionSignals = [
   "Prompt workspace",
   "Live route structure",
   "Product motion system",
-];
-
-const faqs = [
-  {
-    question: "What works right now?",
-    answer: "The build supports backend-connected auth and a workspace shell for prompt drafting.",
-  },
 ];
 
 const LandingPage = () => {
